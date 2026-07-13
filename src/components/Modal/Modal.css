@@ -1,0 +1,106 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 30, 45, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal-window {
+  background: #f3f6fb;
+  border: 1px solid #6a8fb8;
+  box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.35);
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to bottom, #4a7dbd, #2f5f9e);
+  color: #fff;
+  padding: 5px 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+  padding: 14px;
+  overflow: auto;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.form-row label {
+  width: 130px;
+  flex-shrink: 0;
+  color: #333;
+}
+
+.form-row input[type='text'],
+.form-row input[type='number'],
+.form-row select {
+  flex: 1;
+  min-width: 0;
+  padding: 3px 5px;
+  border: 1px solid #9db6d1;
+  background: #fff;
+  font-size: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn {
+  padding: 4px 16px;
+  border: 1px solid #6a8fb8;
+  background: linear-gradient(to bottom, #f7fbff, #d9e8f8);
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 2px;
+}
+
+.btn:hover {
+  background: linear-gradient(to bottom, #eaf3fc, #c3daf2);
+}
+
+.btn:active {
+  background: #a8cdf0;
+}
+
+.btn-primary {
+  border-color: #2f5f9e;
+  font-weight: 600;
+}

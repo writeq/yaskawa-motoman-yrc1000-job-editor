@@ -1,0 +1,70 @@
+.job-editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  overflow: hidden;
+}
+
+.job-tabs {
+  display: flex;
+  background: #dce9f8;
+  border-bottom: 1px solid #a9c8ea;
+  padding: 2px 2px 0;
+}
+
+.job-tab {
+  padding: 4px 14px;
+  font-size: 12px;
+  background: #fff;
+  border: 1px solid #a9c8ea;
+  border-bottom: none;
+  border-radius: 3px 3px 0 0;
+  margin-right: 2px;
+}
+
+.job-lines {
+  flex: 1;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 4px 0;
+}
+
+.job-line {
+  display: flex;
+  gap: 10px;
+  padding: 1px 8px;
+  white-space: pre;
+  cursor: default;
+}
+
+.job-line:hover {
+  background: #eef4fc;
+}
+
+.job-line.selected {
+  background: #2f5f9e;
+  color: #fff;
+}
+
+.job-line.commented {
+  color: #2a8a2a;
+}
+
+.job-line.commented.selected {
+  color: #bfe8bf;
+}
+
+.job-line-no {
+  color: #888;
+  min-width: 34px;
+}
+
+.job-line.selected .job-line-no {
+  color: #cfe0f5;
+}
+
+.lock-mark {
+  margin-right: 4px;
+}

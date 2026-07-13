@@ -1,0 +1,88 @@
+.backstage-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 30, 45, 0.25);
+  z-index: 150;
+}
+
+.backstage-window {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 560px;
+  height: 420px;
+  background: #fff;
+  border: 1px solid #6a8fb8;
+  box-shadow: 3px 3px 14px rgba(0, 0, 0, 0.35);
+  display: flex;
+}
+
+.backstage-actions {
+  width: 220px;
+  background: #eaf1fb;
+  border-right: 1px solid #c7dbf0;
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+}
+
+.backstage-action {
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: #1c3a5c;
+  cursor: pointer;
+}
+
+.backstage-action:hover:not(:disabled) {
+  background: #2f5f9e;
+  color: #fff;
+}
+
+.backstage-action:disabled {
+  color: #a7b6c6;
+  cursor: default;
+}
+
+.backstage-spacer {
+  flex: 1;
+}
+
+.backstage-help {
+  border-top: 1px solid #c7dbf0;
+}
+
+.backstage-recent {
+  flex: 1;
+  padding: 10px 14px;
+}
+
+.backstage-recent-title {
+  font-weight: 600;
+  color: #2f5f9e;
+  margin-bottom: 8px;
+}
+
+.backstage-recent-item {
+  display: flex;
+  gap: 8px;
+  padding: 4px 0;
+  color: #2255aa;
+  font-size: 12px;
+}
+
+.backstage-recent-index {
+  color: #888;
+}
+
+.backstage-exit {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  border: 1px solid #6a8fb8;
+  background: #f3f6fb;
+  padding: 4px 14px;
+  cursor: pointer;
+}

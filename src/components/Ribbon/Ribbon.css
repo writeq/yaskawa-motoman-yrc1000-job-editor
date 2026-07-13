@@ -1,0 +1,193 @@
+.ribbon {
+  background: linear-gradient(to bottom, var(--ribbon-bg-top), var(--ribbon-bg-bottom));
+  border-bottom: 1px solid var(--ribbon-border);
+}
+
+.ribbon-tabs {
+  display: flex;
+  padding-left: 4px;
+}
+
+.ribbon-tab {
+  border: none;
+  background: transparent;
+  padding: 5px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #1c3a5c;
+  border-radius: 3px 3px 0 0;
+}
+
+.ribbon-tab:hover {
+  background: var(--ribbon-tab-hover-bg);
+}
+
+.ribbon-tab.active {
+  background: var(--ribbon-tab-active-bg);
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 #3d7fc9;
+}
+
+.ribbon-panel {
+  display: flex;
+  align-items: stretch;
+  padding: 4px 6px;
+  gap: 2px;
+  background: var(--ribbon-tab-active-bg);
+  border-top: 1px solid var(--ribbon-border);
+  min-height: 88px;
+  overflow-x: auto;
+}
+
+.ribbon-group {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--ribbon-group-border);
+  padding: 2px 6px;
+  flex-shrink: 0;
+}
+
+.ribbon-group:last-child {
+  border-right: none;
+}
+
+.ribbon-group-content {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  flex: 1;
+}
+
+.ribbon-group-label {
+  text-align: center;
+  font-size: 11px;
+  color: var(--ribbon-group-label);
+  margin-top: 2px;
+}
+
+.ribbon-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ribbon-col-stack {
+  gap: 1px;
+}
+
+.ribbon-btn {
+  display: flex;
+  align-items: center;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 3px;
+  color: var(--text-color);
+  padding: 3px 6px;
+}
+
+.ribbon-btn:disabled {
+  color: var(--disabled-color);
+  cursor: default;
+}
+
+.ribbon-btn:not(:disabled):hover {
+  background: var(--button-hover-bg);
+  border-color: var(--button-hover-border);
+}
+
+.ribbon-btn:not(:disabled):active {
+  background: var(--button-active-bg);
+}
+
+.ribbon-btn-big {
+  flex-direction: column;
+  justify-content: center;
+  width: 68px;
+  height: 100%;
+  gap: 4px;
+  text-align: center;
+}
+
+.ribbon-btn-big .ribbon-btn-icon {
+  font-size: 20px;
+}
+
+.ribbon-btn-big .ribbon-btn-label {
+  font-size: 11px;
+  line-height: 1.15;
+  white-space: normal;
+}
+
+.ribbon-btn-small {
+  flex-direction: row;
+  gap: 5px;
+  min-width: 124px;
+}
+
+.ribbon-btn-small .ribbon-btn-icon {
+  font-size: 12px;
+  width: 14px;
+  text-align: center;
+}
+
+.ribbon-btn-small .ribbon-btn-label {
+  font-size: 10.5px;
+  white-space: nowrap;
+}
+
+.ribbon-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  padding: 2px 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ribbon-checkbox input {
+  cursor: pointer;
+}
+
+.ribbon-dropdown {
+  position: relative;
+}
+
+.dropdown-caret {
+  font-size: 8px;
+}
+
+.ribbon-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 50;
+  background: #fff;
+  border: 1px solid var(--ribbon-border);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+  min-width: 150px;
+  padding: 3px;
+}
+
+.ribbon-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 5px 8px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.ribbon-dropdown-item:hover {
+  background: var(--button-hover-bg);
+}
+
+.ribbon-dropdown-item-icon {
+  width: 16px;
+  text-align: center;
+}

@@ -1,0 +1,47 @@
+:root {
+  --ribbon-bg-top: #eef4fc;
+  --ribbon-bg-bottom: #cfe1f7;
+  --ribbon-border: #8fb4de;
+  --ribbon-tab-active-bg: #ffffff;
+  --ribbon-tab-hover-bg: #e2edfb;
+  --ribbon-group-border: #b9cfe9;
+  --ribbon-group-label: #3a5f8a;
+  --button-hover-bg: #cfe4fb;
+  --button-hover-border: #6ea3d6;
+  --button-active-bg: #a8cdf0;
+  --orb-color: #f5a623;
+  --titlebar-bg: #0a2a4d;
+  --window-bg: #ffffff;
+  --status-bg: #dceafb;
+  --status-border: #a9c8ea;
+  --text-color: #1c1c1c;
+  --disabled-color: #9aa7b4;
+  --font-ui: 'Segoe UI', Tahoma, Arial, sans-serif;
+  --font-mono: 'Courier New', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-color);
+  user-select: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+.app-window {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  border: 1px solid #2a4d70;
+}

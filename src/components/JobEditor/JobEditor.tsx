@@ -20,10 +20,12 @@ export function JobEditor() {
               className={`job-line ${isSelected ? 'selected' : ''} ${line.isCommentMarked ? 'commented' : ''}`}
               onClick={() => dispatch({ type: 'SELECT_LINE', lineNo: line.lineNo })}
             >
-              <span className="job-line-no">{String(line.lineNo).padStart(4, '0')}</span>
+              <span className="job-line-no">
+                {line.isEditLocked ? 'X' : ''}
+                {String(line.lineNo).padStart(4, '0')}
+              </span>
               <span className="job-line-text">
-                {line.isEditLocked && <span className="lock-mark">🔒</span>}
-                {line.isCommentMarked && ';'}
+                {line.isCommentMarked && '//'}
                 {line.text}
               </span>
             </div>

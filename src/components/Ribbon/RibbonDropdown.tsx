@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, type ReactNode } from 'react';
+import { IconChevronDown } from '../icons/Icons';
 
 interface RibbonDropdownProps {
   icon: ReactNode;
@@ -24,7 +25,10 @@ export function RibbonDropdown({ icon, label, options, onSelect }: RibbonDropdow
       <button className="ribbon-btn ribbon-btn-big" onClick={() => setOpen((o) => !o)}>
         <span className="ribbon-btn-icon">{icon}</span>
         <span className="ribbon-btn-label">
-          {label} <span className="dropdown-caret">▾</span>
+          {label}{' '}
+          <span className="dropdown-caret">
+            <IconChevronDown size={8} />
+          </span>
         </span>
       </button>
       {open && (

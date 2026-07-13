@@ -58,13 +58,9 @@
 
 .job-line-no {
   color: #888;
-  min-width: 34px;
+  min-width: 42px;
 }
 
 .job-line.selected .job-line-no {
   color: #cfe0f5;
-}
-
-.lock-mark {
-  margin-right: 4px;
 }

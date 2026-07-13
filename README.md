@@ -10,7 +10,8 @@ A free, open-source desktop clone of the Yaskawa Motoman **JEDIT/YRC1000** job e
 
 - **Ribbon interface** (Home / Settings tabs) matching the original layout — Edit Mode, Edit, View, and Settings groups, with a custom SVG icon set
 - **Job editor** line list (`NOP` / `DOUT` / `END`-style instructions) with line selection, edit-lock (`X0001`) and comment (`//`) marks
-- **Backstage menu** — Create Job, Save, Save As, Delete Job, Batch Change Folder Name, Print, Recent files
+- **Real `.JBI` file open/save** via native OS dialogs — reads and writes the job's name, comment, control group, date, and local variable counts, preserving the `//POS` block and any header lines it doesn't model yet so round-tripping a file never silently drops data
+- **Backstage menu** — Create Job, Select Job, Save, Save As, Delete Job, Batch Change Folder Name, Print, Recent files
 - **Dialogs**: Find and Jump, Insert/Modify Instruction (category → instruction → detail), Header of Job, Create Job, Modify Speed, Position Variable, Match Control Group → Select Group → Select, Display Setting (General/Color), Select Language
 
 <p float="left">
@@ -20,12 +21,15 @@ A free, open-source desktop clone of the Yaskawa Motoman **JEDIT/YRC1000** job e
 
 ## Status
 
-This is a UI-first build backed by mock job data — the visual shell and editing flows are in place, but a few things are still on the roadmap:
+The visual shell, editing flows, and real `.JBI` file I/O are in place. Still on the roadmap:
 
-- [ ] Read/write real `.JBI` job files and `ALL.PRM` parameter files
+- [ ] `ALL.PRM` parameter file support (currently only the job file itself is read/written)
 - [ ] Text Mode (freeform Notepad-style editing with autocomplete and syntax check)
 - [ ] Inline line-edit box docked in the main window (currently a modal)
 - [ ] Condition file editing (`IONAME.DAT` / `VARNAME.DAT`), macro commands, expression editor
+- [ ] Position-variable editing (the `//POS` block round-trips untouched but isn't parsed into the Position Variable dialog yet)
+
+> The on-disk format support here is best-effort, reverse-engineered from the editor's own UI — it isn't verified against the vendor's exact byte-for-byte format. Back up real job files before saving over them.
 
 ## Tech stack
 
@@ -60,11 +64,15 @@ src/
     TitleBar/          orb menu button + quick access
     StatusBar/
     Modal/             shared modal shell
+    Toast/             save/open success/error notifications
     dialogs/           every dialog (Find, Insert Instruction, Header, ...)
     icons/             the SVG icon set
-  data/               mock job + instruction definitions
+  data/
+    jbiFormat.ts        .JBI text parser/serializer
+    jobFileIO.ts         open/save flows over the Electron bridge
+    mockJob.ts, instructions.ts
   state/              reducer-based app store
-  types/              job/header/instruction types
+  types/              job/header/instruction types, window.jobEditor bridge
 ```
 
 ## License

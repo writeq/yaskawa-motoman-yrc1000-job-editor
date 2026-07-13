@@ -58,3 +58,8 @@
   letter-spacing: 0.5px;
   opacity: 0.9;
 }
+
+.title-bar-dirty {
+  color: #f5a623;
+  margin-left: 4px;
+}

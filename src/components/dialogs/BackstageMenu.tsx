@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import './BackstageMenu.css';
 import { useAppDispatch, useAppState } from '../../state/store';
 import { RECENT_FILES } from '../../data/mockJob';
+import { openJobFlow, saveJobFlow, saveJobAsFlow } from '../../data/jobFileIO';
 import {
   IconInsertPlus,
   IconFolderOpen,
@@ -32,16 +33,30 @@ export function BackstageMenu({ onClose }: BackstageMenuProps) {
         dispatch({ type: 'OPEN_DIALOG', name: 'createJob' });
       },
     },
-    { label: 'Select Job(O)...', icon: <IconFolderOpen size={16} /> },
+    {
+      label: 'Select Job(O)...',
+      icon: <IconFolderOpen size={16} />,
+      onClick: () => {
+        onClose();
+        void openJobFlow(dispatch);
+      },
+    },
     {
       label: 'Save(S)',
       icon: <IconSaveDisk size={16} />,
       onClick: () => {
-        dispatch({ type: 'LOG', message: `Saved ${state.job.fileName}` });
         onClose();
+        void saveJobFlow(dispatch, state);
       },
     },
-    { label: 'Save As(A)...', icon: <IconRecentFile size={16} /> },
+    {
+      label: 'Save As(A)...',
+      icon: <IconRecentFile size={16} />,
+      onClick: () => {
+        onClose();
+        void saveJobAsFlow(dispatch, state);
+      },
+    },
     { label: 'Delete Job(D)...', icon: <IconTrash size={16} /> },
     { label: 'Batch Change Folder Name(G)', icon: <IconBatchFolder size={16} /> },
     { label: 'Close(C)', icon: <IconClose size={16} />, onClick: onClose },

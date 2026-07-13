@@ -1,5 +1,6 @@
 import './TitleBar.css';
 import { useAppState, useAppDispatch } from '../../state/store';
+import { openJobFlow, saveJobFlow } from '../../data/jobFileIO';
 import { IconOrb, IconNewFile, IconOpenFolderSmall, IconSaveDisk, IconChevronDown } from '../icons/Icons';
 
 export function TitleBar() {
@@ -19,17 +20,20 @@ export function TitleBar() {
         <button title="New Job" onClick={() => dispatch({ type: 'OPEN_DIALOG', name: 'createJob' })}>
           <IconNewFile size={15} />
         </button>
-        <button title="Open Job">
+        <button title="Open Job" onClick={() => void openJobFlow(dispatch)}>
           <IconOpenFolderSmall size={15} />
         </button>
-        <button title="Save">
+        <button title="Save" onClick={() => void saveJobFlow(dispatch, state)}>
           <IconSaveDisk size={15} />
         </button>
         <span className="quick-access-arrow">
           <IconChevronDown size={9} />
         </span>
       </div>
-      <div className="title-bar-text">{state.job.fileName.replace('.JBI', '')}YRC1000</div>
+      <div className="title-bar-text">
+        {state.job.fileName.replace('.JBI', '')}YRC1000
+        {state.job.isDirty && <span className="title-bar-dirty">•</span>}
+      </div>
     </div>
   );
 }

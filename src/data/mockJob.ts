@@ -3,6 +3,9 @@ import type { Job } from '../types/jbi';
 export function createMockJob(): Job {
   return {
     fileName: 'SDF.JBI',
+    filePath: null,
+    isDirty: false,
+    rawPositionSection: [],
     header: {
       name: 'SDF',
       comment: '',

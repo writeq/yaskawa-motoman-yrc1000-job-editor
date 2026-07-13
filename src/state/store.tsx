@@ -1,6 +1,7 @@
 import { createContext, useContext, useReducer, type ReactNode, type Dispatch } from 'react';
 import type { ControlGroupDef, Job, JobHeader } from '../types/jbi';
 import { createMockJob } from '../data/mockJob';
+import type { ParsedInstHeader } from '../data/jbiFormat';
 
 export type RibbonTab = 'home' | 'settings';
 export type EditMode = 'standard' | 'text';
@@ -22,8 +23,14 @@ export type DialogName =
   | 'selectLanguage'
   | 'conditionFile';
 
+export interface Toast {
+  text: string;
+  kind: 'success' | 'error';
+}
+
 export interface AppState {
   job: Job;
+  instHeader: ParsedInstHeader | undefined;
   activeRibbonTab: RibbonTab;
   editMode: EditMode;
   levelOfInform: LevelOfInform;
@@ -34,11 +41,13 @@ export interface AppState {
   language: string;
   controlGroups: ControlGroupDef[];
   logMessages: string[];
+  toast: Toast | null;
 }
 
 function initialState(): AppState {
   return {
     job: createMockJob(),
+    instHeader: undefined,
     activeRibbonTab: 'home',
     editMode: 'standard',
     levelOfInform: 'standard',
@@ -49,6 +58,7 @@ function initialState(): AppState {
     language: 'English',
     controlGroups: [{ name: 'R1', firstControlGroup: 'R1:ROBOT1', secondControlGroup: '**', master: '**' }],
     logMessages: [],
+    toast: null,
   };
 }
 
@@ -72,15 +82,19 @@ export type Action =
   | { type: 'UPDATE_LINE'; lineNo: number; text: string }
   | { type: 'UPDATE_HEADER'; header: Partial<JobHeader> }
   | { type: 'CREATE_JOB'; name: string; jobFolder: string; controlGroup: string }
+  | { type: 'LOAD_JOB'; job: Job; instHeader: ParsedInstHeader }
+  | { type: 'JOB_SAVED'; filePath: string; fileName: string }
   | { type: 'SET_LANGUAGE'; language: string }
   | { type: 'SET_CONTROL_GROUPS'; groups: ControlGroupDef[] }
+  | { type: 'SHOW_TOAST'; toast: Toast }
+  | { type: 'CLEAR_TOAST' }
   | { type: 'LOG'; message: string };
 
 function renumber(lines: Job['lines']): Job['lines'] {
   return lines.map((l, i) => ({ ...l, lineNo: i }));
 }
 
-function reducer(state: AppState, action: Action): AppState {
+function baseReducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case 'SET_RIBBON_TAB':
       return { ...state, activeRibbonTab: action.tab };
@@ -177,6 +191,9 @@ function reducer(state: AppState, action: Action): AppState {
         ...state,
         job: {
           fileName: `${action.name}.JBI`,
+          filePath: null,
+          isDirty: true,
+          rawPositionSection: [],
           header: {
             name: action.name,
             comment: '',
@@ -200,17 +217,55 @@ function reducer(state: AppState, action: Action): AppState {
             { lineNo: 1, text: 'END', isEditLocked: false, isCommentMarked: false },
           ],
         },
+        instHeader: undefined,
         selectedLine: 0,
+      };
+    case 'LOAD_JOB':
+      return {
+        ...state,
+        job: action.job,
+        instHeader: action.instHeader,
+        selectedLine: action.job.lines[0]?.lineNo ?? null,
+        clipboard: state.clipboard,
+      };
+    case 'JOB_SAVED':
+      return {
+        ...state,
+        job: { ...state.job, filePath: action.filePath, fileName: action.fileName, isDirty: false },
       };
     case 'SET_LANGUAGE':
       return { ...state, language: action.language };
     case 'SET_CONTROL_GROUPS':
       return { ...state, controlGroups: action.groups };
+    case 'SHOW_TOAST':
+      return { ...state, toast: action.toast };
+    case 'CLEAR_TOAST':
+      return { ...state, toast: null };
     case 'LOG':
       return { ...state, logMessages: [...state.logMessages, action.message] };
     default:
       return state;
   }
+}
+
+const DIRTYING_ACTIONS = new Set<Action['type']>([
+  'CUT_LINE',
+  'PASTE_LINE',
+  'TOGGLE_EDIT_LOCK',
+  'CLEAR_ALL_EDIT_LOCKS',
+  'TOGGLE_COMMENT_MARK',
+  'CLEAR_ALL_COMMENT_MARKS',
+  'INSERT_LINE',
+  'UPDATE_LINE',
+  'UPDATE_HEADER',
+]);
+
+function reducer(state: AppState, action: Action): AppState {
+  const next = baseReducer(state, action);
+  if (next.job !== state.job && DIRTYING_ACTIONS.has(action.type) && !next.job.isDirty) {
+    return { ...next, job: { ...next.job, isDirty: true } };
+  }
+  return next;
 }
 
 const StateContext = createContext<AppState | null>(null);

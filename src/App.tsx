@@ -16,6 +16,7 @@ import { MatchControlGroupDialog } from './components/dialogs/MatchControlGroupD
 import { DisplaySettingDialog } from './components/dialogs/DisplaySettingDialog';
 import { SelectLanguageDialog } from './components/dialogs/SelectLanguageDialog';
 import { ConditionFileDialog } from './components/dialogs/ConditionFileDialog';
+import { Toast } from './components/Toast/Toast';
 import type { DialogName } from './state/store';
 
 function DialogHost() {
@@ -50,6 +51,7 @@ function AppShell() {
       <JobEditor />
       <StatusBar />
       <DialogHost />
+      <Toast />
     </div>
   );
 }

@@ -28,8 +28,13 @@ export interface JobLine {
 
 export interface Job {
   fileName: string;
+  filePath: string | null;
   header: JobHeader;
   lines: JobLine[];
+  /** Raw //POS ... block preserved verbatim so we don't corrupt position-variable
+   * data we don't fully model yet. Empty when the job has no position variables. */
+  rawPositionSection: string[];
+  isDirty: boolean;
 }
 
 export function jobStepCount(job: Job): number {

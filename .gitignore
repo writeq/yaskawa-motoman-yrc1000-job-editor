@@ -24,3 +24,6 @@ release
 *.njsproj
 *.sln
 *.sw?
+
+# Vendor reference docs kept locally, not redistributed
+*.pdf

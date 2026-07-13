@@ -1,8 +1,27 @@
 {
-  "name": "yaskawa-motoman-yrc1000-job-editor",
+  "name": "yrc1000-job-editor",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
+  "description": "Free, open-source desktop job editor for Yaskawa Motoman YRC1000 robot controllers, built with Electron, React, and TypeScript.",
+  "keywords": [
+    "yaskawa",
+    "motoman",
+    "yrc1000",
+    "robot",
+    "job-editor",
+    "electron",
+    "react"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/writeq/yaskawa-motoman-yrc1000-job-editor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/writeq/yaskawa-motoman-yrc1000-job-editor/issues"
+  },
+  "homepage": "https://github.com/writeq/yaskawa-motoman-yrc1000-job-editor#readme",
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",

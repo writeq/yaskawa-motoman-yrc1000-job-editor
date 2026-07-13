@@ -27,13 +27,22 @@
 }
 
 .backstage-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   text-align: left;
   border: none;
   background: transparent;
-  padding: 8px 16px;
+  padding: 7px 16px;
   font-size: 12px;
   color: #1c3a5c;
   cursor: pointer;
+}
+
+.backstage-action-icon {
+  display: flex;
+  width: 18px;
+  flex-shrink: 0;
 }
 
 .backstage-action:hover:not(:disabled) {
@@ -67,6 +76,7 @@
 
 .backstage-recent-item {
   display: flex;
+  align-items: center;
   gap: 8px;
   padding: 4px 0;
   color: #2255aa;
@@ -81,6 +91,9 @@
   position: absolute;
   bottom: 8px;
   right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   border: 1px solid #6a8fb8;
   background: #f3f6fb;
   padding: 4px 14px;

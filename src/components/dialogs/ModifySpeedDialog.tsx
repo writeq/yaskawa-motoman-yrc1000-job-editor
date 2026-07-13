@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Modal } from '../Modal/Modal';
 import { useAppState } from '../../state/store';
+import { IconGauge } from '../icons/Icons';
 import './dialogs.css';
 
 interface ModifySpeedDialogProps {
@@ -17,7 +18,7 @@ export function ModifySpeedDialog({ onClose }: ModifySpeedDialogProps) {
   const [speed, setSpeed] = useState(25);
 
   return (
-    <Modal title="Modify Speed" onClose={onClose} width={320}>
+    <Modal title="Modify Speed" icon={<IconGauge size={16} />} onClose={onClose} width={320}>
       <div className="form-row">
         <label>Start Line No:</label>
         <input

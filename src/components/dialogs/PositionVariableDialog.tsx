@@ -1,4 +1,5 @@
 import { Modal } from '../Modal/Modal';
+import { IconPin } from '../icons/Icons';
 import './dialogs.css';
 
 interface PositionVariableDialogProps {
@@ -11,7 +12,7 @@ export function PositionVariableDialog({ onClose }: PositionVariableDialogProps)
   const rows = Array.from({ length: 100 }, (_, i) => i);
 
   return (
-    <Modal title="Position variable" onClose={onClose} width={760}>
+    <Modal title="Position variable" icon={<IconPin size={16} />} onClose={onClose} width={760}>
       <div className="modal-actions" style={{ marginTop: 0, marginBottom: 8, justifyContent: 'flex-start' }}>
         <button className="btn btn-primary" onClick={onClose}>
           OK

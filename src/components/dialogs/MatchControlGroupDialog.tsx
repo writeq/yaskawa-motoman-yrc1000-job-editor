@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Modal } from '../Modal/Modal';
 import { useAppDispatch, useAppState } from '../../state/store';
 import type { ControlGroupDef } from '../../types/jbi';
+import { IconLink } from '../icons/Icons';
 import './dialogs.css';
 
 interface MatchControlGroupDialogProps {
@@ -101,7 +102,7 @@ export function MatchControlGroupDialog({ onClose }: MatchControlGroupDialogProp
   }
 
   return (
-    <Modal title="Match Controlgroup" onClose={onClose} width={300}>
+    <Modal title="Match Controlgroup" icon={<IconLink size={16} />} onClose={onClose} width={300}>
       <div className="two-col">
         <div className="list-box" style={{ height: 120 }}>
           {state.controlGroups.map((g) => (

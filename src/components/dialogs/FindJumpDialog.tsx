@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Modal } from '../Modal/Modal';
 import { useAppDispatch, useAppState } from '../../state/store';
+import { IconFind } from '../icons/Icons';
 import './dialogs.css';
 
 interface FindJumpDialogProps {
@@ -34,7 +35,7 @@ export function FindJumpDialog({ onClose }: FindJumpDialogProps) {
   }
 
   return (
-    <Modal title="Find and Jump" onClose={onClose} width={340}>
+    <Modal title="Find and Jump" icon={<IconFind size={16} />} onClose={onClose} width={340}>
       <div className="dialog-tabs">
         <button className={`dialog-tab ${tab === 'search' ? 'active' : ''}`} onClick={() => setTab('search')}>
           Search

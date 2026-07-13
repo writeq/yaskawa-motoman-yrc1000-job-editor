@@ -351,6 +351,85 @@ export function IconSaveDisk({ size }: IconProps) {
   );
 }
 
+export function IconPrinter({ size }: IconProps) {
+  return (
+    <Svg size={size}>
+      <path d="M5.5 7.5v-4h9v4" stroke={STROKE} strokeWidth="1.4" strokeLinejoin="round" fill="#fff" />
+      <rect x="3" y="7.5" width="14" height="6" rx="1" stroke={STROKE} strokeWidth="1.4" fill="#fff" />
+      <rect x="5.5" y="12" width="9" height="5.5" stroke={STROKE} strokeWidth="1.3" fill="#fff" />
+      <circle cx="14.2" cy="9.7" r="0.7" fill={STROKE} />
+    </Svg>
+  );
+}
+
+export function IconPreview({ size }: IconProps) {
+  return (
+    <Svg size={size}>
+      <path d="M5 2.5h6.5l3 3V15H5V2.5Z" stroke={STROKE} strokeWidth="1.3" strokeLinejoin="round" fill="#fff" />
+      <path d="M11.5 2.5v3h3" stroke={STROKE} strokeWidth="1.3" strokeLinejoin="round" />
+      <circle cx="12" cy="13" r="3.4" stroke={STROKE_DARK} strokeWidth="1.3" fill="#fff" />
+      <path d="M14.5 15.5 17 18" stroke={STROKE_DARK} strokeWidth="1.5" strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+export function IconTrash({ size }: IconProps) {
+  return (
+    <Svg size={size}>
+      <path d="M4 5.5h12" stroke={RED} strokeWidth="1.4" strokeLinecap="round" />
+      <path d="M7.5 5.5V4a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v1.5" stroke={RED} strokeWidth="1.4" fill="none" />
+      <path d="M5.5 5.5 6.3 17h7.4l.8-11.5" stroke={RED} strokeWidth="1.4" strokeLinejoin="round" fill="#fdecea" />
+      <path d="M8.5 8.5v6M11.5 8.5v6" stroke={RED} strokeWidth="1.1" strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+export function IconClose({ size }: IconProps) {
+  return (
+    <Svg size={size}>
+      <path d="M5 5.5h6l3 3V17H5V5.5Z" stroke={STROKE} strokeWidth="1.3" strokeLinejoin="round" fill="#fff" />
+      <path d="M11 5.5v3h3" stroke={STROKE} strokeWidth="1.3" strokeLinejoin="round" />
+      <path d="M7.5 10.5l4 4M11.5 10.5l-4 4" stroke={RED} strokeWidth="1.4" strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+export function IconHelp({ size }: IconProps) {
+  return (
+    <Svg size={size}>
+      <circle cx="10" cy="10" r="7.2" stroke={STROKE} strokeWidth="1.4" fill="#fff" />
+      <path
+        d="M7.8 8a2.2 2.2 0 1 1 3.4 1.8c-.7.5-1.2.9-1.2 2"
+        stroke={STROKE}
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <circle cx="10" cy="14.2" r="0.9" fill={STROKE} />
+    </Svg>
+  );
+}
+
+export function IconBatchFolder({ size }: IconProps) {
+  return (
+    <Svg size={size}>
+      <path d="M2.5 6.5h4.6l1.3 1.6H15v7.4H2.5V6.5Z" stroke={AMBER} strokeWidth="1.3" strokeLinejoin="round" fill="#ffe6b3" />
+      <path d="M6 4.2h4.6l1.3 1.6H17v7.4" stroke={STROKE} strokeWidth="1.2" strokeLinejoin="round" fill="none" />
+    </Svg>
+  );
+}
+
+export function IconRecentFile({ size }: IconProps) {
+  return (
+    <Svg size={size}>
+      <path d="M5 2.5h7l3 3v12H5V2.5Z" stroke={STROKE} strokeWidth="1.3" strokeLinejoin="round" fill="#fff" />
+      <path d="M12 2.5v3h3" stroke={STROKE} strokeWidth="1.3" strokeLinejoin="round" />
+      <circle cx="10" cy="12" r="2.6" stroke={STROKE_DARK} strokeWidth="1.1" fill="none" />
+      <path d="M10 10.6V12l1 .8" stroke={STROKE_DARK} strokeWidth="1.1" strokeLinecap="round" />
+    </Svg>
+  );
+}
+
 export function IconOrb({ size = 15 }: IconProps) {
   return (
     <Svg size={size}>

@@ -1,6 +1,19 @@
+import type { ReactNode } from 'react';
 import './BackstageMenu.css';
 import { useAppDispatch, useAppState } from '../../state/store';
 import { RECENT_FILES } from '../../data/mockJob';
+import {
+  IconInsertPlus,
+  IconFolderOpen,
+  IconSaveDisk,
+  IconRecentFile,
+  IconTrash,
+  IconBatchFolder,
+  IconClose,
+  IconPrinter,
+  IconPreview,
+  IconHelp,
+} from '../icons/Icons';
 
 interface BackstageMenuProps {
   onClose: () => void;
@@ -10,28 +23,30 @@ export function BackstageMenu({ onClose }: BackstageMenuProps) {
   const dispatch = useAppDispatch();
   const state = useAppState();
 
-  const items: { label: string; onClick?: () => void; disabled?: boolean }[] = [
+  const items: { label: string; icon: ReactNode; onClick?: () => void; disabled?: boolean }[] = [
     {
       label: 'Create Job(N)',
+      icon: <IconInsertPlus size={16} />,
       onClick: () => {
         onClose();
         dispatch({ type: 'OPEN_DIALOG', name: 'createJob' });
       },
     },
-    { label: 'Select Job(O)...' },
+    { label: 'Select Job(O)...', icon: <IconFolderOpen size={16} /> },
     {
       label: 'Save(S)',
+      icon: <IconSaveDisk size={16} />,
       onClick: () => {
         dispatch({ type: 'LOG', message: `Saved ${state.job.fileName}` });
         onClose();
       },
     },
-    { label: 'Save As(A)...' },
-    { label: 'Delete Job(D)...' },
-    { label: 'Batch Change Folder Name(G)' },
-    { label: 'Close(C)', onClick: onClose },
-    { label: 'Print(P)' },
-    { label: 'Print Preview(V)' },
+    { label: 'Save As(A)...', icon: <IconRecentFile size={16} /> },
+    { label: 'Delete Job(D)...', icon: <IconTrash size={16} /> },
+    { label: 'Batch Change Folder Name(G)', icon: <IconBatchFolder size={16} /> },
+    { label: 'Close(C)', icon: <IconClose size={16} />, onClick: onClose },
+    { label: 'Print(P)', icon: <IconPrinter size={16} /> },
+    { label: 'Print Preview(V)', icon: <IconPreview size={16} /> },
   ];
 
   return (
@@ -40,11 +55,17 @@ export function BackstageMenu({ onClose }: BackstageMenuProps) {
         <div className="backstage-actions">
           {items.map((item) => (
             <button key={item.label} className="backstage-action" disabled={item.disabled} onClick={item.onClick}>
+              <span className="backstage-action-icon">{item.icon}</span>
               {item.label}
             </button>
           ))}
           <div className="backstage-spacer" />
-          <button className="backstage-action backstage-help">❔ Help(H)</button>
+          <button className="backstage-action backstage-help">
+            <span className="backstage-action-icon">
+              <IconHelp size={16} />
+            </span>
+            Help(H)
+          </button>
         </div>
         <div className="backstage-recent">
           <div className="backstage-recent-title">Recent files</div>
@@ -52,13 +73,14 @@ export function BackstageMenu({ onClose }: BackstageMenuProps) {
             {RECENT_FILES.map((f, i) => (
               <div key={f} className="backstage-recent-item">
                 <span className="backstage-recent-index">{i + 1}</span>
+                <IconRecentFile size={14} />
                 {f}
               </div>
             ))}
           </div>
         </div>
         <button className="backstage-exit" onClick={onClose}>
-          ✕ Exit(X)
+          <IconClose size={13} /> Exit(X)
         </button>
       </div>
     </div>

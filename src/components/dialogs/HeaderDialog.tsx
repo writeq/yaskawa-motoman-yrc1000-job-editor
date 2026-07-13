@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Modal } from '../Modal/Modal';
 import { useAppDispatch, useAppState } from '../../state/store';
 import { jobSizeBytes, jobStepCount, type LocaleVariableCounts } from '../../types/jbi';
+import { IconTag } from '../icons/Icons';
 import './dialogs.css';
 
 interface HeaderDialogProps {
@@ -32,7 +33,7 @@ export function HeaderDialog({ onClose }: HeaderDialogProps) {
   }
 
   return (
-    <Modal title="Header of Job" onClose={onClose} width={more ? 460 : 360}>
+    <Modal title="Header of Job" icon={<IconTag size={16} />} onClose={onClose} width={more ? 460 : 360}>
       <div className="form-row">
         <label>Name:</label>
         <input type="text" value={job.header.name} disabled />

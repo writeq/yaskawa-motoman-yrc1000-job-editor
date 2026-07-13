@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Modal } from '../Modal/Modal';
 import { useAppDispatch, useAppState } from '../../state/store';
+import { IconGlobe } from '../icons/Icons';
 import './dialogs.css';
 
 interface SelectLanguageDialogProps {
@@ -34,7 +35,7 @@ export function SelectLanguageDialog({ onClose }: SelectLanguageDialogProps) {
   }
 
   return (
-    <Modal title="Select Language" onClose={onClose} width={300}>
+    <Modal title="Select Language" icon={<IconGlobe size={16} />} onClose={onClose} width={300}>
       <div className="create-job-title">Language:</div>
       <div className="two-col">
         <div className="list-box" style={{ height: 160 }}>

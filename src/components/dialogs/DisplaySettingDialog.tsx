@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Modal } from '../Modal/Modal';
+import { IconEye } from '../icons/Icons';
 import './dialogs.css';
 
 interface DisplaySettingDialogProps {
@@ -50,7 +51,7 @@ export function DisplaySettingDialog({ onClose }: DisplaySettingDialogProps) {
   const [startUp, setStartUp] = useState<'standard' | 'text'>('standard');
 
   return (
-    <Modal title="Display Setting" onClose={onClose} width={480}>
+    <Modal title="Display Setting" icon={<IconEye size={16} />} onClose={onClose} width={480}>
       <div className="dialog-tabs">
         <button className={`dialog-tab ${tab === 'general' ? 'active' : ''}`} onClick={() => setTab('general')}>
           General

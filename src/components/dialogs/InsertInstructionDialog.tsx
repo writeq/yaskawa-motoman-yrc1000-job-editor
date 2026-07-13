@@ -10,6 +10,7 @@ import {
   type InstructionField,
 } from '../../data/instructions';
 import { DetailEditFields } from './DetailEditFields';
+import { IconInsertPlus } from '../icons/Icons';
 import './dialogs.css';
 
 interface InsertInstructionDialogProps {
@@ -58,7 +59,7 @@ export function InsertInstructionDialog({ onClose }: InsertInstructionDialogProp
   const previewText = instName ? buildInstructionText(instName, fields) : '';
 
   return (
-    <Modal title="Insert Instruction(I)" onClose={onClose} width={320}>
+    <Modal title="Insert Instruction(I)" icon={<IconInsertPlus size={16} />} onClose={onClose} width={320}>
       {step === 'category' && (
         <>
           <div className="create-job-title">Select Inst</div>

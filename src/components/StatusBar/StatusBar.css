@@ -13,3 +13,8 @@
 .status-bar-spacer {
   flex: 1;
 }
+
+.status-bar-mode {
+  font-weight: 600;
+  color: #1c3a5c;
+}

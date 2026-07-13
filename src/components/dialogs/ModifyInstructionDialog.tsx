@@ -3,6 +3,7 @@ import { Modal } from '../Modal/Modal';
 import { useAppDispatch, useAppState } from '../../state/store';
 import { buildInstructionText, parseInstructionLine, type InstructionField } from '../../data/instructions';
 import { DetailEditFields } from './DetailEditFields';
+import { IconDocumentPencil } from '../icons/Icons';
 import './dialogs.css';
 
 interface ModifyInstructionDialogProps {
@@ -29,7 +30,7 @@ export function ModifyInstructionDialog({ onClose }: ModifyInstructionDialogProp
   }
 
   return (
-    <Modal title="Detail Edit" onClose={onClose} width={320}>
+    <Modal title="Detail Edit" icon={<IconDocumentPencil size={16} />} onClose={onClose} width={320}>
       <DetailEditFields name={parsed.name} fields={fields} onChange={handleChange} />
       <div className="modal-actions">
         <button className="btn btn-primary" onClick={handleOk}>

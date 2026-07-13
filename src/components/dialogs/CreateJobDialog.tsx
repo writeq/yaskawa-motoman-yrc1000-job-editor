@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Modal } from '../Modal/Modal';
 import { useAppDispatch } from '../../state/store';
 import { JOB_FOLDERS, CONTROL_GROUPS } from '../../data/mockJob';
+import { IconInsertPlus } from '../icons/Icons';
 import './dialogs.css';
 
 interface CreateJobDialogProps {
@@ -22,7 +23,7 @@ export function CreateJobDialog({ onClose }: CreateJobDialogProps) {
   }
 
   return (
-    <Modal title="Create Job" onClose={onClose} width={340}>
+    <Modal title="Create Job" icon={<IconInsertPlus size={16} />} onClose={onClose} width={340}>
       <div className="form-row">
         <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Job name" />
       </div>

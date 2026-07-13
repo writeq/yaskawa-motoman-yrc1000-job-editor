@@ -39,9 +39,46 @@ button {
   font-family: inherit;
 }
 
+input,
+select {
+  font-family: inherit;
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 2px solid #5b9bd5;
+  outline-offset: 1px;
+}
+
 .app-window {
   display: flex;
   flex-direction: column;
   height: 100vh;
   border: 1px solid #2a4d70;
+}
+
+/* Themed scrollbars for a cohesive desktop feel */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a9c8ea #eef4fc;
+}
+
+*::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #eef4fc;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #b7cfea;
+  border: 2px solid #eef4fc;
+  border-radius: 6px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #8fb4de;
 }

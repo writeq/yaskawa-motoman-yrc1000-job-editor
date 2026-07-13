@@ -29,6 +29,13 @@
   font-family: var(--font-mono);
   font-size: 13px;
   padding: 4px 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    #fff 0,
+    #fff 19px,
+    #fafcff 19px,
+    #fafcff 38px
+  );
 }
 
 .job-line {
@@ -37,6 +44,7 @@
   padding: 1px 8px;
   white-space: pre;
   cursor: default;
+  border-left: 3px solid transparent;
 }
 
 .job-line:hover {
@@ -44,7 +52,8 @@
 }
 
 .job-line.selected {
-  background: #2f5f9e;
+  border-left-color: #16345c;
+  background: linear-gradient(to bottom, #35659e, #2b5590);
   color: #fff;
 }
 
@@ -59,6 +68,12 @@
 .job-line-no {
   color: #888;
   min-width: 42px;
+  padding-right: 6px;
+  border-right: 1px solid #e4ecf6;
+}
+
+.job-line.selected .job-line-no {
+  border-right-color: rgba(255, 255, 255, 0.25);
 }
 
 .job-line.selected .job-line-no {

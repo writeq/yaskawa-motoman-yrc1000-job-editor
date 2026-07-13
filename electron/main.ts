@@ -11,6 +11,7 @@ function createWindow() {
     minWidth: 1000,
     minHeight: 600,
     autoHideMenuBar: true,
+    icon: path.join(dirname, '../build-resources/icon.png'),
     webPreferences: {
       preload: path.join(dirname, 'preload.mjs'),
       contextIsolation: true,

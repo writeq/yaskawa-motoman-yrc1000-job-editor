@@ -18,6 +18,7 @@
   "build": {
     "appId": "com.jobeditor.yrc1000",
     "productName": "YRC1000 Job Editor",
+    "icon": "build-resources/icon.png",
     "files": [
       "dist/**/*",
       "dist-electron/**/*"

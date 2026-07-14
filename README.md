@@ -28,9 +28,10 @@ The visual shell, editing flows, and real `.JBI` file I/O are in place. Still on
 - [ ] `ALL.PRM` parameter file parsing — we only check that one exists next to the job (and warn if it doesn't, matching the original); its actual binary/text layout isn't publicly documented, so its contents (instruction sets, aliases, control group options, ...) aren't read
 - [ ] Text Mode autocomplete/input support (the original suggests instruction/tag candidates as you type)
 - [ ] Condition file editing (`IONAME.DAT` / `VARNAME.DAT`), macro commands, expression editor
-- [ ] Position-variable editing (the `//POS` block round-trips untouched but isn't parsed into the Position Variable dialog yet)
 
-> The on-disk format support here is best-effort, reverse-engineered from the editor's own UI — it isn't verified against the vendor's exact byte-for-byte format. Back up real job files before saving over them.
+**Deliberately out of scope: editing the `//POS` block.** It holds the job's actual robot/base/station position data — the coordinates a real controller would move to. We preserve it byte-for-byte on load/save so nothing is lost, but we won't parse or expose it for editing without a verified spec for its layout: a subtly wrong field here doesn't just produce a broken file, it can drive a real robot to the wrong physical position. The Position Variable dialog stays a read-only mock display until that changes.
+
+> The on-disk format support here is otherwise best-effort, reverse-engineered from the editor's own UI — it isn't verified against the vendor's exact byte-for-byte format. Back up real job files before saving over them.
 
 ## Tech stack
 

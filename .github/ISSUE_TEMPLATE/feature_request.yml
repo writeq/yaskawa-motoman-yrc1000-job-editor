@@ -1,0 +1,30 @@
+name: Feature request
+description: Suggest a UI, workflow, or file-format capability
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The workflow or use case this would unblock.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: What should happen. Screenshots of the original JEDIT/YRC1000 app doing the equivalent thing are extremely helpful here.
+    validations:
+      required: false
+
+  - type: textarea
+    id: format-notes
+    attributes:
+      label: File format details (if relevant)
+      description: >
+        If this touches on-disk file parsing (.JBI, IONAME.DAT/VARNAME.DAT, ALL.PRM, //POS),
+        please include any verified spec/documentation you have — see the README's "Status"
+        section for why we're conservative about guessing at undocumented vendor formats.
+    validations:
+      required: false

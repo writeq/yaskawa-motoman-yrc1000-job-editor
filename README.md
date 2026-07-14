@@ -1,5 +1,9 @@
 # YRC1000 Job Editor
 
+[![Build](https://github.com/writeq/yaskawa-motoman-yrc1000-job-editor/actions/workflows/build.yml/badge.svg)](https://github.com/writeq/yaskawa-motoman-yrc1000-job-editor/actions/workflows/build.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
 A free, open-source desktop clone of the Yaskawa Motoman **JEDIT/YRC1000** job editor ribbon UI, built with **Electron + React + TypeScript**.
 
 > **Unofficial, independent project.** This is a from-scratch recreation of the editor's user interface, written for interoperability and educational purposes. It is not affiliated with, endorsed by, or built from the source code of Yaskawa Electric Corporation. "YRC1000" and "Motoman" are trademarks of their respective owner.
@@ -87,6 +91,14 @@ src/
   state/              reducer-based app store
   types/              job/header/instruction types, window.jobEditor bridge
 ```
+
+## Contributing
+
+Issues and PRs are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for how to get set up and what to keep in mind (especially around the file-format scope boundaries above). Please also read the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 

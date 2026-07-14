@@ -1,7 +1,7 @@
 {
   "name": "yrc1000-job-editor",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "Free, open-source desktop job editor for Yaskawa Motoman YRC1000 robot controllers, built with Electron, React, and TypeScript.",
   "keywords": [

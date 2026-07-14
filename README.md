@@ -25,7 +25,7 @@ A free, open-source desktop clone of the Yaskawa Motoman **JEDIT/YRC1000** job e
 
 The visual shell, editing flows, and real `.JBI` file I/O are in place. Still on the roadmap:
 
-- [ ] `ALL.PRM` parameter file support (currently only the job file itself is read/written)
+- [ ] `ALL.PRM` parameter file parsing — we only check that one exists next to the job (and warn if it doesn't, matching the original); its actual binary/text layout isn't publicly documented, so its contents (instruction sets, aliases, control group options, ...) aren't read
 - [ ] Text Mode autocomplete/input support (the original suggests instruction/tag candidates as you type)
 - [ ] Condition file editing (`IONAME.DAT` / `VARNAME.DAT`), macro commands, expression editor
 - [ ] Position-variable editing (the `//POS` block round-trips untouched but isn't parsed into the Position Variable dialog yet)

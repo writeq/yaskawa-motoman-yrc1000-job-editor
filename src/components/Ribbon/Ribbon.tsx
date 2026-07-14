@@ -2,6 +2,7 @@ import './Ribbon.css';
 import { useAppState, useAppDispatch, type RibbonTab } from '../../state/store';
 import { RibbonButton, RibbonCheckbox } from './RibbonButton';
 import { RibbonDropdown } from './RibbonDropdown';
+import { parseInstructionLine } from '../../data/instructions';
 import {
   IconDocument,
   IconDocumentPencil,
@@ -44,8 +45,16 @@ export function Ribbon() {
   const state = useAppState();
   const dispatch = useAppDispatch();
   const hasSelection = state.selectedLine !== null;
+  const isLineEditing = state.lineEditor !== null;
 
   const setTab = (tab: RibbonTab) => dispatch({ type: 'SET_RIBBON_TAB', tab });
+
+  function handleModifyInstruction() {
+    const line = state.job.lines.find((l) => l.lineNo === state.selectedLine);
+    if (!line) return;
+    const parsed = parseInstructionLine(line.text);
+    dispatch({ type: 'OPEN_LINE_EDITOR', mode: 'modify', name: parsed.name, fields: parsed.fields });
+  }
 
   return (
     <div className="ribbon">
@@ -143,14 +152,15 @@ export function Ribbon() {
                 size="small"
                 icon={<IconInsertPlus size={15} />}
                 label="Insert Instruction(I)"
+                disabled={isLineEditing}
                 onClick={() => dispatch({ type: 'OPEN_DIALOG', name: 'insertInstruction' })}
               />
               <RibbonButton
                 size="small"
                 icon={<IconModify size={15} />}
                 label="Modify Instruction(J)"
-                disabled={!hasSelection}
-                onClick={() => dispatch({ type: 'OPEN_DIALOG', name: 'modifyInstruction' })}
+                disabled={!hasSelection || isLineEditing}
+                onClick={handleModifyInstruction}
               />
             </div>
             <div className="ribbon-col ribbon-col-stack">

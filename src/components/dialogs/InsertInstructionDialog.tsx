@@ -5,11 +5,8 @@ import {
   INSTRUCTION_CATEGORIES,
   INSTRUCTIONS_BY_CATEGORY,
   INSTRUCTION_TEMPLATES,
-  buildInstructionText,
   type InstructionCategory,
-  type InstructionField,
 } from '../../data/instructions';
-import { DetailEditFields } from './DetailEditFields';
 import { IconInsertPlus } from '../icons/Icons';
 import './dialogs.css';
 
@@ -17,15 +14,13 @@ interface InsertInstructionDialogProps {
   onClose: () => void;
 }
 
-type Step = 'category' | 'instruction' | 'preview';
+type Step = 'category' | 'instruction';
 
 export function InsertInstructionDialog({ onClose }: InsertInstructionDialogProps) {
   const dispatch = useAppDispatch();
   const [step, setStep] = useState<Step>('category');
   const [category, setCategory] = useState<InstructionCategory | null>(null);
   const [instName, setInstName] = useState<string | null>(null);
-  const [fields, setFields] = useState<InstructionField[]>([]);
-  const [editMode, setEditMode] = useState(false);
 
   function pickCategory(cat: InstructionCategory) {
     setCategory(cat);
@@ -42,21 +37,14 @@ export function InsertInstructionDialog({ onClose }: InsertInstructionDialogProp
   function confirmInstruction() {
     if (!instName) return;
     const template = INSTRUCTION_TEMPLATES[instName];
-    setFields(template ? template.fields.map((f) => ({ ...f })) : []);
-    setStep('preview');
-  }
-
-  function handleFieldChange(i: number, value: string) {
-    setFields((prev) => prev.map((f, idx) => (idx === i ? { ...f, value } : f)));
-  }
-
-  function handleInsert() {
-    if (!instName) return;
-    dispatch({ type: 'INSERT_LINE', text: buildInstructionText(instName, fields) });
+    dispatch({
+      type: 'OPEN_LINE_EDITOR',
+      mode: 'insert',
+      name: instName,
+      fields: template ? template.fields.map((f) => ({ ...f })) : [],
+    });
     onClose();
   }
-
-  const previewText = instName ? buildInstructionText(instName, fields) : '';
 
   return (
     <Modal title="Insert Instruction(I)" icon={<IconInsertPlus size={16} />} onClose={onClose} width={320}>
@@ -109,39 +97,6 @@ export function InsertInstructionDialog({ onClose }: InsertInstructionDialogProp
               Back
             </button>
             <button className="btn btn-primary" disabled={!instName} onClick={confirmInstruction}>
-              Ok
-            </button>
-            <button className="btn" onClick={onClose}>
-              Cancel
-            </button>
-          </div>
-        </>
-      )}
-
-      {step === 'preview' && instName && (
-        <>
-          {editMode ? (
-            <DetailEditFields name={instName} fields={fields} onChange={handleFieldChange} />
-          ) : (
-            <div className="preview-row">
-              <div className="preview-arrows">
-                <button>◂</button>
-                <button>▸</button>
-              </div>
-              <span className="preview-text">{previewText}</span>
-              <button className="btn" onClick={() => setEditMode(true)}>
-                Edit
-              </button>
-            </div>
-          )}
-          <div className="preview-stats">
-            {previewText.length + 2}Byte 2Lines 0Steps
-          </div>
-          <div className="modal-actions">
-            <button className="btn" onClick={() => setStep('instruction')}>
-              Back
-            </button>
-            <button className="btn btn-primary" onClick={handleInsert}>
               Ok
             </button>
             <button className="btn" onClick={onClose}>

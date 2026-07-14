@@ -2,6 +2,7 @@ import { createContext, useContext, useReducer, type ReactNode, type Dispatch } 
 import type { ControlGroupDef, Job, JobHeader } from '../types/jbi';
 import { createMockJob } from '../data/mockJob';
 import type { ParsedInstHeader } from '../data/jbiFormat';
+import type { InstructionField } from '../data/instructions';
 
 export type RibbonTab = 'home' | 'settings';
 export type EditMode = 'standard' | 'text';
@@ -11,7 +12,7 @@ export type DialogName =
   | 'backstage'
   | 'findJump'
   | 'insertInstruction'
-  | 'modifyInstruction'
+  | 'lineDetailEdit'
   | 'header'
   | 'createJob'
   | 'modifySpeed'
@@ -28,6 +29,15 @@ export interface Toast {
   kind: 'success' | 'error';
 }
 
+/** The inline line-edit bar docked at the bottom of the job editor, used to
+ * insert a new instruction or modify the selected one — mirrors the
+ * original app's line-edit box instead of a modal dialog. */
+export interface LineEditorState {
+  mode: 'insert' | 'modify';
+  name: string;
+  fields: InstructionField[];
+}
+
 export interface AppState {
   job: Job;
   instHeader: ParsedInstHeader | undefined;
@@ -42,6 +52,7 @@ export interface AppState {
   controlGroups: ControlGroupDef[];
   logMessages: string[];
   toast: Toast | null;
+  lineEditor: LineEditorState | null;
 }
 
 function initialState(): AppState {
@@ -59,6 +70,7 @@ function initialState(): AppState {
     controlGroups: [{ name: 'R1', firstControlGroup: 'R1:ROBOT1', secondControlGroup: '**', master: '**' }],
     logMessages: [],
     toast: null,
+    lineEditor: null,
   };
 }
 
@@ -88,6 +100,9 @@ export type Action =
   | { type: 'SET_CONTROL_GROUPS'; groups: ControlGroupDef[] }
   | { type: 'SHOW_TOAST'; toast: Toast }
   | { type: 'CLEAR_TOAST' }
+  | { type: 'OPEN_LINE_EDITOR'; mode: 'insert' | 'modify'; name: string; fields: InstructionField[] }
+  | { type: 'UPDATE_LINE_EDITOR_FIELDS'; fields: InstructionField[] }
+  | { type: 'CLOSE_LINE_EDITOR' }
   | { type: 'LOG'; message: string };
 
 function renumber(lines: Job['lines']): Job['lines'] {
@@ -241,6 +256,12 @@ function baseReducer(state: AppState, action: Action): AppState {
       return { ...state, toast: action.toast };
     case 'CLEAR_TOAST':
       return { ...state, toast: null };
+    case 'OPEN_LINE_EDITOR':
+      return { ...state, lineEditor: { mode: action.mode, name: action.name, fields: action.fields } };
+    case 'UPDATE_LINE_EDITOR_FIELDS':
+      return state.lineEditor ? { ...state, lineEditor: { ...state.lineEditor, fields: action.fields } } : state;
+    case 'CLOSE_LINE_EDITOR':
+      return { ...state, lineEditor: null };
     case 'LOG':
       return { ...state, logMessages: [...state.logMessages, action.message] };
     default:

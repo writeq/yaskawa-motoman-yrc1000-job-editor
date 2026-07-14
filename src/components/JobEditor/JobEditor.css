@@ -51,6 +51,10 @@
   background: #eef4fc;
 }
 
+.job-lines-locked .job-line:hover {
+  background: none;
+}
+
 .job-line.selected {
   border-left-color: #16345c;
   background: linear-gradient(to bottom, #35659e, #2b5590);

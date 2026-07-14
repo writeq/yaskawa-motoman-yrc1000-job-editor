@@ -1,0 +1,54 @@
+.line-edit-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  background: #eef4fc;
+  border-top: 1px solid #a9c8ea;
+  box-shadow: 0 -3px 6px -3px rgba(30, 60, 100, 0.2);
+}
+
+.line-edit-nav {
+  display: flex;
+  gap: 1px;
+}
+
+.line-edit-nav button {
+  width: 20px;
+  height: 22px;
+  border: 1px solid #9db6d1;
+  background: #fff;
+  cursor: pointer;
+  font-size: 10px;
+  color: #2f5f9e;
+}
+
+.line-edit-nav button:hover {
+  background: #dceafc;
+}
+
+.line-edit-preview {
+  flex: 1;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  background: #2f5f9e;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  border: 1px solid #1c3a5c;
+  outline: none;
+}
+
+.line-edit-preview:focus-visible {
+  outline: 2px solid #f5a623;
+  outline-offset: -2px;
+}
+
+.line-edit-stats {
+  font-size: 11px;
+  color: #555;
+  white-space: nowrap;
+  margin-left: 4px;
+}

@@ -1,37 +1,35 @@
 import { useState } from 'react';
 import { Modal } from '../Modal/Modal';
 import { useAppDispatch, useAppState } from '../../state/store';
-import { buildInstructionText, parseInstructionLine, type InstructionField } from '../../data/instructions';
+import type { InstructionField } from '../../data/instructions';
 import { DetailEditFields } from './DetailEditFields';
 import { IconDocumentPencil } from '../icons/Icons';
 import './dialogs.css';
 
-interface ModifyInstructionDialogProps {
+interface LineDetailEditDialogProps {
   onClose: () => void;
 }
 
-export function ModifyInstructionDialog({ onClose }: ModifyInstructionDialogProps) {
+export function LineDetailEditDialog({ onClose }: LineDetailEditDialogProps) {
   const state = useAppState();
   const dispatch = useAppDispatch();
-  const line = state.job.lines.find((l) => l.lineNo === state.selectedLine);
-  const parsed = line ? parseInstructionLine(line.text) : { name: '', fields: [] };
-  const [fields, setFields] = useState<InstructionField[]>(parsed.fields);
+  const editor = state.lineEditor;
+  const [fields, setFields] = useState<InstructionField[]>(editor?.fields ?? []);
 
-  if (!line) return null;
-  const lineNo = line.lineNo;
+  if (!editor) return null;
 
   function handleChange(i: number, value: string) {
     setFields((prev) => prev.map((f, idx) => (idx === i ? { ...f, value } : f)));
   }
 
   function handleOk() {
-    dispatch({ type: 'UPDATE_LINE', lineNo, text: buildInstructionText(parsed.name, fields) });
+    dispatch({ type: 'UPDATE_LINE_EDITOR_FIELDS', fields });
     onClose();
   }
 
   return (
     <Modal title="Detail Edit" icon={<IconDocumentPencil size={16} />} onClose={onClose} width={320}>
-      <DetailEditFields name={parsed.name} fields={fields} onChange={handleChange} />
+      <DetailEditFields name={editor.name} fields={fields} onChange={handleChange} />
       <div className="modal-actions">
         <button className="btn btn-primary" onClick={handleOk}>
           Ok

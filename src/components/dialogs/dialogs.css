@@ -152,43 +152,6 @@ select.control-group-list {
   padding: 6px 0;
 }
 
-.preview-row {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  border: 1px solid #6a8fb8;
-  background: #fff;
-  padding: 3px 6px;
-}
-
-.preview-text {
-  flex: 1;
-  font-family: var(--font-mono);
-  background: #2f5f9e;
-  color: #fff;
-  padding: 2px 6px;
-}
-
-.preview-arrows {
-  display: flex;
-  gap: 1px;
-}
-
-.preview-arrows button {
-  width: 18px;
-  border: 1px solid #9db6d1;
-  background: #eef4fc;
-  cursor: pointer;
-  font-size: 10px;
-}
-
-.preview-stats {
-  text-align: right;
-  color: #555;
-  font-size: 11px;
-  margin-top: 6px;
-}
-
 .mcg-actions {
   display: flex;
   flex-direction: column;

@@ -8,7 +8,7 @@ import { BackstageMenu } from './components/dialogs/BackstageMenu';
 import { CreateJobDialog } from './components/dialogs/CreateJobDialog';
 import { FindJumpDialog } from './components/dialogs/FindJumpDialog';
 import { InsertInstructionDialog } from './components/dialogs/InsertInstructionDialog';
-import { ModifyInstructionDialog } from './components/dialogs/ModifyInstructionDialog';
+import { LineDetailEditDialog } from './components/dialogs/LineDetailEditDialog';
 import { HeaderDialog } from './components/dialogs/HeaderDialog';
 import { ModifySpeedDialog } from './components/dialogs/ModifySpeedDialog';
 import { PositionVariableDialog } from './components/dialogs/PositionVariableDialog';
@@ -31,7 +31,7 @@ function DialogHost() {
       {isOpen('createJob') && <CreateJobDialog onClose={() => close('createJob')} />}
       {isOpen('findJump') && <FindJumpDialog onClose={() => close('findJump')} />}
       {isOpen('insertInstruction') && <InsertInstructionDialog onClose={() => close('insertInstruction')} />}
-      {isOpen('modifyInstruction') && <ModifyInstructionDialog onClose={() => close('modifyInstruction')} />}
+      {isOpen('lineDetailEdit') && <LineDetailEditDialog onClose={() => close('lineDetailEdit')} />}
       {isOpen('header') && <HeaderDialog onClose={() => close('header')} />}
       {isOpen('modifySpeed') && <ModifySpeedDialog onClose={() => close('modifySpeed')} />}
       {isOpen('positionVariable') && <PositionVariableDialog onClose={() => close('positionVariable')} />}

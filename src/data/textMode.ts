@@ -4,6 +4,9 @@ import { INSTRUCTIONS_BY_CATEGORY } from './instructions';
 
 const KNOWN_INSTRUCTIONS = new Set<string>(['NOP', 'END', ...Object.values(INSTRUCTIONS_BY_CATEGORY).flat()]);
 
+/** Sorted, de-duplicated instruction names for autocomplete. */
+export const KNOWN_INSTRUCTION_NAMES: string[] = Array.from(KNOWN_INSTRUCTIONS).sort();
+
 export interface LogEntry {
   lineNo: number | null;
   text: string;
@@ -35,6 +38,31 @@ export function buildHeaderPreviewLines(job: Job, instHeader: ParsedInstHeader |
     out.push(`///GROUP1 ${job.header.controlGroup}`);
   }
   return out;
+}
+
+export interface TokenAtCursor {
+  /** The partial instruction name typed so far (leading token of its line). */
+  token: string;
+  start: number;
+  end: number;
+  line: number;
+  column: number;
+}
+
+/** Finds the leading token of the current line up to the cursor, for
+ * instruction-name autocomplete. Returns null when the cursor is inside a
+ * comment line or past the line's first token (i.e. typing an argument). */
+export function getCurrentToken(content: string, cursorPos: number): TokenAtCursor | null {
+  const before = content.slice(0, cursorPos);
+  const lineStart = before.lastIndexOf('\n') + 1;
+  const line = (before.match(/\n/g) ?? []).length;
+  const lineTextBeforeCursor = before.slice(lineStart);
+  if (lineTextBeforeCursor.trimStart().startsWith('//')) return null;
+  const leadingMatch = /^\s*/.exec(lineTextBeforeCursor);
+  const leadingLen = leadingMatch ? leadingMatch[0].length : 0;
+  const rest = lineTextBeforeCursor.slice(leadingLen);
+  if (/\s/.test(rest)) return null;
+  return { token: rest, start: lineStart + leadingLen, end: cursorPos, line, column: cursorPos - lineStart };
 }
 
 export function parseTextModeContent(content: string): JobLine[] {

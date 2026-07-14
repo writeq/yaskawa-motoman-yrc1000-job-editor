@@ -11,7 +11,7 @@ A free, open-source desktop clone of the Yaskawa Motoman **JEDIT/YRC1000** job e
 - **Ribbon interface** (Home / Settings tabs) matching the original layout — Edit Mode, Edit, View, and Settings groups, with a custom SVG icon set
 - **Job editor** line list (`NOP` / `DOUT` / `END`-style instructions) with line selection, edit-lock (`X0001`) and comment (`//`) marks
 - **Inline line-edit bar** docked at the bottom of the main window (not a modal) for inserting/modifying an instruction, with an Edit button that drills into the structured field editor — mirrors the original app's interaction model
-- **Text Mode** — freeform textarea editing of the instruction body (one instruction per line, `//` comments), an optional read-only header preview via "Job all display", and Check instruction/Compile syntax validation reported through a Log viewer panel with click-to-jump errors
+- **Text Mode** — freeform textarea editing of the instruction body (one instruction per line, `//` comments), instruction-name autocomplete as you type (↑/↓ to navigate, Tab/Enter to accept, Esc to dismiss), an optional read-only header preview via "Job all display", and Check instruction/Compile syntax validation reported through a Log viewer panel with click-to-jump errors
 - **Real `.JBI` file open/save** via native OS dialogs — reads and writes the job's name, comment, control group, date, and local variable counts, preserving the `//POS` block and any header lines it doesn't model yet so round-tripping a file never silently drops data
 - **Backstage menu** — Create Job, Select Job, Save, Save As, Delete Job, Batch Change Folder Name, Print, Recent files
 - **Dialogs**: Find and Jump, Insert/Modify Instruction (category → instruction → detail), Header of Job, Create Job, Modify Speed, Position Variable, Match Control Group → Select Group → Select, Display Setting (General/Color), Select Language
@@ -27,7 +27,7 @@ A free, open-source desktop clone of the Yaskawa Motoman **JEDIT/YRC1000** job e
 The visual shell, editing flows, and real `.JBI` file I/O are in place. Still on the roadmap:
 
 - [ ] `ALL.PRM` parameter file parsing — we only check that one exists next to the job (and warn if it doesn't, matching the original); its actual binary/text layout isn't publicly documented, so its contents (instruction sets, aliases, control group options, ...) aren't read
-- [ ] Text Mode autocomplete/input support (the original suggests instruction/tag candidates as you type)
+- [ ] Text Mode tag/argument autocomplete (instruction-name autocomplete is done; the original also suggests I/O tag names for arguments)
 - [ ] Macro commands, expression editor (SET/EXPRESS)
 
 Condition files are read as a flat, ordered list of `number  name` entries — the vendor's exact column layout and any IN/OUT or B/I/D/R/S/P/BP/EX type-sectioning convention within a single file isn't documented, so we don't guess at splitting entries into sections.

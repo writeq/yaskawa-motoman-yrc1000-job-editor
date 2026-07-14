@@ -16,6 +16,7 @@ A free, open-source desktop clone of the Yaskawa Motoman **JEDIT/YRC1000** job e
 - **Backstage menu** — Create Job, Select Job, Save, Save As, Delete Job, Batch Change Folder Name, Print, Recent files
 - **Dialogs**: Find and Jump, Insert/Modify Instruction (category → instruction → detail), Header of Job, Create Job, Modify Speed, Position Variable, Match Control Group → Select Group → Select, Display Setting (General/Color), Select Language
 - **Condition File Edit** — open a real `IONAME.DAT`/`VARNAME.DAT` file, browse its number → name entries, rename one via a Character Edit sub-dialog, and save back to disk
+- **Arithmetic instruction fields** — `SET`/`ADD`/`SUB`/`MUL`/`DIV`/`AND`/`OR`/`NOT` get a VAR/VALUE detail-edit form instead of inserting a bare instruction name
 
 <p float="left">
   <img src="docs/screenshots/insert-instruction.png" width="49%" alt="Insert Instruction dialog" />
@@ -28,7 +29,8 @@ The visual shell, editing flows, and real `.JBI` file I/O are in place. Still on
 
 - [ ] `ALL.PRM` parameter file parsing — we only check that one exists next to the job (and warn if it doesn't, matching the original); its actual binary/text layout isn't publicly documented, so its contents (instruction sets, aliases, control group options, ...) aren't read
 - [ ] Text Mode tag/argument autocomplete (instruction-name autocomplete is done; the original also suggests I/O tag names for arguments)
-- [ ] Macro commands, expression editor (SET/EXPRESS)
+
+**Deliberately out of scope: macro command definitions.** The `MACRO` instruction category is preserved and editable as free text, but what a given macro number actually does is defined in `ALL.PRM`, which — as above — we don't parse. Without a verified spec we won't invent a macro registry to populate that dropdown from.
 
 Condition files are read as a flat, ordered list of `number  name` entries — the vendor's exact column layout and any IN/OUT or B/I/D/R/S/P/BP/EX type-sectioning convention within a single file isn't documented, so we don't guess at splitting entries into sections.
 

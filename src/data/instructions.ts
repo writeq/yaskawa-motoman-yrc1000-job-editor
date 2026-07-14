@@ -77,6 +77,59 @@ export const INSTRUCTION_TEMPLATES: Record<string, InstructionTemplate> = {
   NOP: { name: 'NOP', fields: [] },
   RET: { name: 'RET', fields: [] },
   PAUSE: { name: 'PAUSE', fields: [] },
+  SET: {
+    name: 'SET',
+    fields: [
+      { label: 'VAR', value: 'B000' },
+      { label: 'VALUE', value: '0' },
+    ],
+  },
+  ADD: {
+    name: 'ADD',
+    fields: [
+      { label: 'VAR', value: 'B000' },
+      { label: 'VALUE', value: '1' },
+    ],
+  },
+  SUB: {
+    name: 'SUB',
+    fields: [
+      { label: 'VAR', value: 'B000' },
+      { label: 'VALUE', value: '1' },
+    ],
+  },
+  MUL: {
+    name: 'MUL',
+    fields: [
+      { label: 'VAR', value: 'B000' },
+      { label: 'VALUE', value: '1' },
+    ],
+  },
+  DIV: {
+    name: 'DIV',
+    fields: [
+      { label: 'VAR', value: 'B000' },
+      { label: 'VALUE', value: '1' },
+    ],
+  },
+  AND: {
+    name: 'AND',
+    fields: [
+      { label: 'VAR', value: 'B000' },
+      { label: 'VALUE', value: '0' },
+    ],
+  },
+  OR: {
+    name: 'OR',
+    fields: [
+      { label: 'VAR', value: 'B000' },
+      { label: 'VALUE', value: '0' },
+    ],
+  },
+  NOT: {
+    name: 'NOT',
+    fields: [{ label: 'VAR', value: 'B000' }],
+  },
 };
 
 export function buildInstructionText(name: string, fields: InstructionField[]): string {

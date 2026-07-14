@@ -26,6 +26,10 @@ A free, open-source desktop clone of the Yaskawa Motoman **JEDIT/YRC1000** job e
   <img src="docs/screenshots/insert-instruction.png" width="49%" alt="Insert Instruction dialog" />
   <img src="docs/screenshots/position-variable.png" width="49%" alt="Position Variable dialog" />
 </p>
+<p float="left">
+  <img src="docs/screenshots/text-mode-autocomplete.png" width="49%" alt="Text Mode with instruction-name autocomplete" />
+  <img src="docs/screenshots/condition-file-edit.png" width="49%" alt="Condition File Edit dialog" />
+</p>
 
 ## Status
 

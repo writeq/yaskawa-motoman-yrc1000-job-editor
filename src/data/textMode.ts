@@ -1,4 +1,4 @@
-import type { Job, JobLine } from '../types/jbi';
+import type { Job, JobLine, LocaleVariableCounts } from '../types/jbi';
 import type { ParsedInstHeader } from './jbiFormat';
 import { INSTRUCTIONS_BY_CATEGORY } from './instructions';
 
@@ -63,6 +63,55 @@ export function getCurrentToken(content: string, cursorPos: number): TokenAtCurs
   const rest = lineTextBeforeCursor.slice(leadingLen);
   if (/\s/.test(rest)) return null;
   return { token: rest, start: lineStart + leadingLen, end: cursorPos, line, column: cursorPos - lineStart };
+}
+
+/** Finds the word being typed at the cursor when it's *not* the line's
+ * leading token (i.e. an instruction argument, not the instruction name
+ * itself). Returns null on comment lines or while still typing the first
+ * token — that case is handled by {@link getCurrentToken} instead. */
+export function getCurrentArgToken(content: string, cursorPos: number): TokenAtCursor | null {
+  const before = content.slice(0, cursorPos);
+  const lineStart = before.lastIndexOf('\n') + 1;
+  const line = (before.match(/\n/g) ?? []).length;
+  const lineTextBeforeCursor = before.slice(lineStart);
+  if (lineTextBeforeCursor.trimStart().startsWith('//')) return null;
+  const leadingMatch = /^\s*/.exec(lineTextBeforeCursor);
+  const leadingLen = leadingMatch ? leadingMatch[0].length : 0;
+  const afterLeading = lineTextBeforeCursor.slice(leadingLen);
+  if (!/\s/.test(afterLeading)) return null;
+  const wordMatch = /(\S*)$/.exec(lineTextBeforeCursor);
+  const token = wordMatch ? wordMatch[1] : '';
+  const start = cursorPos - token.length;
+  return { token, start, end: cursorPos, line, column: cursorPos - lineStart };
+}
+
+/** Local-variable tag prefixes, longest first so "BP"/"EX" aren't shadowed
+ * by the single-letter "B"/"P" prefixes when matching a typed token. */
+const VARIABLE_TAG_PREFIXES: [string, keyof LocaleVariableCounts][] = [
+  ['BP', 'basePosition'],
+  ['EX', 'stationPosition'],
+  ['B', 'byte'],
+  ['I', 'integer'],
+  ['D', 'double'],
+  ['R', 'real'],
+  ['S', 'string'],
+  ['P', 'robotPosition'],
+];
+
+const MAX_TAGS_PER_TYPE = 200;
+
+/** Builds the list of valid local-variable tags (e.g. "B000", "BP002") from
+ * the job's own declared //LVARS counts — grounded in data the job actually
+ * declares, not a guess at a vendor tag database we don't have. */
+export function buildVariableTagCandidates(locale: LocaleVariableCounts): string[] {
+  const out: string[] = [];
+  for (const [prefix, field] of VARIABLE_TAG_PREFIXES) {
+    const count = Math.min(locale[field] ?? 0, MAX_TAGS_PER_TYPE);
+    for (let i = 0; i < count; i++) {
+      out.push(`${prefix}${String(i).padStart(3, '0')}`);
+    }
+  }
+  return out;
 }
 
 export function parseTextModeContent(content: string): JobLine[] {

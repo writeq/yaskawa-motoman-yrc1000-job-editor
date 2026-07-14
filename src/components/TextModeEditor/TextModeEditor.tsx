@@ -1,8 +1,14 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import './TextModeEditor.css';
 import { useAppState, useAppDispatch } from '../../state/store';
-import { buildHeaderPreviewLines, getCurrentToken, KNOWN_INSTRUCTION_NAMES } from '../../data/textMode';
+import {
+  buildHeaderPreviewLines,
+  buildVariableTagCandidates,
+  getCurrentArgToken,
+  getCurrentToken,
+  KNOWN_INSTRUCTION_NAMES,
+} from '../../data/textMode';
 
 interface Suggestion {
   items: string[];
@@ -29,6 +35,7 @@ export function TextModeEditor() {
   const { textModeContent } = state;
   const lineCount = textModeContent === '' ? 1 : textModeContent.split('\n').length;
   const headerLines = state.view.jobAllDisplay ? buildHeaderPreviewLines(state.job, state.instHeader) : [];
+  const variableTags = useMemo(() => buildVariableTagCandidates(state.job.header.locale), [state.job.header.locale]);
 
   useLayoutEffect(() => {
     if (measureRef.current) {
@@ -49,25 +56,41 @@ export function TextModeEditor() {
       setSuggestion(null);
       return;
     }
-    const info = getCurrentToken(ta.value, ta.selectionStart);
-    if (!info || info.token.length === 0) {
-      setSuggestion(null);
-      return;
+    const instInfo = getCurrentToken(ta.value, ta.selectionStart);
+    if (instInfo && instInfo.token.length > 0) {
+      const upper = instInfo.token.toUpperCase();
+      const items = KNOWN_INSTRUCTION_NAMES.filter((name) => name.startsWith(upper) && name !== upper).slice(0, 8);
+      if (items.length > 0) {
+        setSuggestion({
+          items,
+          index: 0,
+          start: instInfo.start,
+          end: instInfo.end,
+          top: 4 + instInfo.line * LINE_HEIGHT - ta.scrollTop + LINE_HEIGHT,
+          left: 8 + instInfo.column * charWidthRef.current - ta.scrollLeft,
+        });
+        return;
+      }
     }
-    const upper = info.token.toUpperCase();
-    const items = KNOWN_INSTRUCTION_NAMES.filter((name) => name.startsWith(upper) && name !== upper).slice(0, 8);
-    if (items.length === 0) {
-      setSuggestion(null);
-      return;
+
+    const argInfo = getCurrentArgToken(ta.value, ta.selectionStart);
+    if (argInfo && argInfo.token.length > 0) {
+      const upper = argInfo.token.toUpperCase();
+      const items = variableTags.filter((tag) => tag.startsWith(upper) && tag !== upper).slice(0, 8);
+      if (items.length > 0) {
+        setSuggestion({
+          items,
+          index: 0,
+          start: argInfo.start,
+          end: argInfo.end,
+          top: 4 + argInfo.line * LINE_HEIGHT - ta.scrollTop + LINE_HEIGHT,
+          left: 8 + argInfo.column * charWidthRef.current - ta.scrollLeft,
+        });
+        return;
+      }
     }
-    setSuggestion({
-      items,
-      index: 0,
-      start: info.start,
-      end: info.end,
-      top: 4 + info.line * LINE_HEIGHT - ta.scrollTop + LINE_HEIGHT,
-      left: 8 + info.column * charWidthRef.current - ta.scrollLeft,
-    });
+
+    setSuggestion(null);
   }
 
   function applySuggestion(name: string) {

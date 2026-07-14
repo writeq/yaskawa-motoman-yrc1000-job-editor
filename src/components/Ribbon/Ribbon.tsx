@@ -3,6 +3,8 @@ import { useAppState, useAppDispatch, type RibbonTab } from '../../state/store';
 import { RibbonButton, RibbonCheckbox } from './RibbonButton';
 import { RibbonDropdown } from './RibbonDropdown';
 import { parseInstructionLine } from '../../data/instructions';
+import { linesToTextModeContent, parseTextModeContent, validateInstructionText } from '../../data/textMode';
+import { saveJobFlow } from '../../data/jobFileIO';
 import {
   IconDocument,
   IconDocumentPencil,
@@ -46,6 +48,7 @@ export function Ribbon() {
   const dispatch = useAppDispatch();
   const hasSelection = state.selectedLine !== null;
   const isLineEditing = state.lineEditor !== null;
+  const isTextMode = state.editMode === 'text';
 
   const setTab = (tab: RibbonTab) => dispatch({ type: 'SET_RIBBON_TAB', tab });
 
@@ -54,6 +57,40 @@ export function Ribbon() {
     if (!line) return;
     const parsed = parseInstructionLine(line.text);
     dispatch({ type: 'OPEN_LINE_EDITOR', mode: 'modify', name: parsed.name, fields: parsed.fields });
+  }
+
+  function handleSwitchToStandard() {
+    if (isTextMode) {
+      dispatch({ type: 'REPLACE_LINES', lines: parseTextModeContent(state.textModeContent) });
+    }
+    dispatch({ type: 'SET_EDIT_MODE', mode: 'standard' });
+  }
+
+  function handleSwitchToText() {
+    dispatch({ type: 'SET_TEXT_MODE_CONTENT', content: linesToTextModeContent(state.job.lines) });
+    dispatch({ type: 'SET_EDIT_MODE', mode: 'text' });
+  }
+
+  function showLog(messages: ReturnType<typeof validateInstructionText>) {
+    dispatch({ type: 'SET_LOG_MESSAGES', messages });
+    dispatch({ type: 'OPEN_VIEW', key: 'logViewer' });
+  }
+
+  function handleCheckInstruction() {
+    const errors = validateInstructionText(state.textModeContent);
+    showLog(errors.length > 0 ? errors : [{ lineNo: null, text: 'File check is complete.' }]);
+  }
+
+  function handleCompile() {
+    const errors = validateInstructionText(state.textModeContent);
+    if (errors.length > 0) {
+      showLog(errors);
+      return;
+    }
+    const lines = parseTextModeContent(state.textModeContent);
+    dispatch({ type: 'REPLACE_LINES', lines });
+    showLog([{ lineNo: null, text: 'File check is complete.' }]);
+    void saveJobFlow(dispatch, { ...state.job, lines }, state.instHeader);
   }
 
   return (
@@ -76,16 +113,8 @@ export function Ribbon() {
       {state.activeRibbonTab === 'home' && (
         <div className="ribbon-panel">
           <RibbonGroup label="Edit Mode">
-            <RibbonButton
-              icon={<IconDocument />}
-              label="Standard(S)"
-              onClick={() => dispatch({ type: 'SET_EDIT_MODE', mode: 'standard' })}
-            />
-            <RibbonButton
-              icon={<IconDocumentPencil />}
-              label="Text(T)"
-              onClick={() => dispatch({ type: 'SET_EDIT_MODE', mode: 'text' })}
-            />
+            <RibbonButton icon={<IconDocument />} label="Standard(S)" onClick={handleSwitchToStandard} />
+            <RibbonButton icon={<IconDocumentPencil />} label="Text(T)" onClick={handleSwitchToText} />
             <RibbonDropdown
               icon={<IconGauge />}
               label="Level of Inform(L)"
@@ -102,20 +131,43 @@ export function Ribbon() {
 
           <RibbonGroup label="Edit">
             <div className="ribbon-col">
-              <RibbonButton icon={<IconClipboard />} label="Paste(V)" onClick={() => dispatch({ type: 'PASTE_LINE' })} />
+              <RibbonButton
+                icon={<IconClipboard />}
+                label="Paste(V)"
+                disabled={isTextMode}
+                onClick={() => dispatch({ type: 'PASTE_LINE' })}
+              />
             </div>
             <div className="ribbon-col ribbon-col-stack">
-              <RibbonButton size="small" icon={<IconScissors size={15} />} label="Cut(X)" onClick={() => dispatch({ type: 'CUT_LINE' })} />
-              <RibbonButton size="small" icon={<IconCopy size={15} />} label="Copy(C)" onClick={() => dispatch({ type: 'COPY_LINE' })} />
-              <RibbonButton size="small" icon={<IconReverse size={15} />} label="Reverse(R)" />
+              <RibbonButton
+                size="small"
+                icon={<IconScissors size={15} />}
+                label="Cut(X)"
+                disabled={isTextMode}
+                onClick={() => dispatch({ type: 'CUT_LINE' })}
+              />
+              <RibbonButton
+                size="small"
+                icon={<IconCopy size={15} />}
+                label="Copy(C)"
+                disabled={isTextMode}
+                onClick={() => dispatch({ type: 'COPY_LINE' })}
+              />
+              <RibbonButton size="small" icon={<IconReverse size={15} />} label="Reverse(R)" disabled={isTextMode} />
             </div>
             <div className="ribbon-col">
-              <RibbonButton icon={<IconFind />} label="Find(F)" onClick={() => dispatch({ type: 'OPEN_DIALOG', name: 'findJump' })} />
+              <RibbonButton
+                icon={<IconFind />}
+                label="Find(F)"
+                disabled={isTextMode}
+                onClick={() => dispatch({ type: 'OPEN_DIALOG', name: 'findJump' })}
+              />
             </div>
             <div className="ribbon-col">
               <RibbonButton
                 icon={<IconGauge />}
                 label="Modify Speed(P)"
+                disabled={isTextMode}
                 onClick={() => dispatch({ type: 'OPEN_DIALOG', name: 'modifySpeed' })}
               />
             </div>
@@ -124,20 +176,21 @@ export function Ribbon() {
                 size="small"
                 icon={<IconLockClosed size={15} />}
                 label="Edit Lock(D)"
-                disabled={!hasSelection}
+                disabled={!hasSelection || isTextMode}
                 onClick={() => dispatch({ type: 'TOGGLE_EDIT_LOCK' })}
               />
               <RibbonButton
                 size="small"
                 icon={<IconComment size={15} />}
                 label="Comment(G)"
-                disabled={!hasSelection}
+                disabled={!hasSelection || isTextMode}
                 onClick={() => dispatch({ type: 'TOGGLE_COMMENT_MARK' })}
               />
               <RibbonButton
                 size="small"
                 icon={<IconLockOpen size={15} />}
                 label="Clear all Edit Lock(A)"
+                disabled={isTextMode}
                 onClick={() => dispatch({ type: 'CLEAR_ALL_EDIT_LOCKS' })}
               />
             </div>
@@ -146,26 +199,39 @@ export function Ribbon() {
                 size="small"
                 icon={<IconCommentOff size={15} />}
                 label="Clear all mark of comment(B)"
+                disabled={isTextMode}
                 onClick={() => dispatch({ type: 'CLEAR_ALL_COMMENT_MARKS' })}
               />
               <RibbonButton
                 size="small"
                 icon={<IconInsertPlus size={15} />}
                 label="Insert Instruction(I)"
-                disabled={isLineEditing}
+                disabled={isLineEditing || isTextMode}
                 onClick={() => dispatch({ type: 'OPEN_DIALOG', name: 'insertInstruction' })}
               />
               <RibbonButton
                 size="small"
                 icon={<IconModify size={15} />}
                 label="Modify Instruction(J)"
-                disabled={!hasSelection || isLineEditing}
+                disabled={!hasSelection || isLineEditing || isTextMode}
                 onClick={handleModifyInstruction}
               />
             </div>
             <div className="ribbon-col ribbon-col-stack">
-              <RibbonButton size="small" icon={<IconCheckCircle size={15} />} label="Check instruction(E)" disabled />
-              <RibbonButton size="small" icon={<IconGear size={15} />} label="Compile(K)" disabled />
+              <RibbonButton
+                size="small"
+                icon={<IconCheckCircle size={15} />}
+                label="Check instruction(E)"
+                disabled={!isTextMode}
+                onClick={handleCheckInstruction}
+              />
+              <RibbonButton
+                size="small"
+                icon={<IconGear size={15} />}
+                label="Compile(K)"
+                disabled={!isTextMode}
+                onClick={handleCompile}
+              />
             </div>
           </RibbonGroup>
 

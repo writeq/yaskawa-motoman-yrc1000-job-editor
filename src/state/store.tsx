@@ -1,8 +1,9 @@
 import { createContext, useContext, useReducer, type ReactNode, type Dispatch } from 'react';
-import type { ControlGroupDef, Job, JobHeader } from '../types/jbi';
+import type { ControlGroupDef, Job, JobHeader, JobLine } from '../types/jbi';
 import { createMockJob } from '../data/mockJob';
 import type { ParsedInstHeader } from '../data/jbiFormat';
 import type { InstructionField } from '../data/instructions';
+import { linesToTextModeContent, type LogEntry } from '../data/textMode';
 
 export type RibbonTab = 'home' | 'settings';
 export type EditMode = 'standard' | 'text';
@@ -50,14 +51,19 @@ export interface AppState {
   openDialogs: Set<DialogName>;
   language: string;
   controlGroups: ControlGroupDef[];
-  logMessages: string[];
+  logMessages: LogEntry[];
   toast: Toast | null;
   lineEditor: LineEditorState | null;
+  /** Freeform Text Mode buffer, one instruction per line. Only meaningful
+   * while editMode === 'text'; synced back into job.lines when leaving
+   * Text Mode or when Check instruction/Compile run. */
+  textModeContent: string;
 }
 
 function initialState(): AppState {
+  const job = createMockJob();
   return {
-    job: createMockJob(),
+    job,
     instHeader: undefined,
     activeRibbonTab: 'home',
     editMode: 'standard',
@@ -71,6 +77,7 @@ function initialState(): AppState {
     logMessages: [],
     toast: null,
     lineEditor: null,
+    textModeContent: linesToTextModeContent(job.lines),
   };
 }
 
@@ -103,7 +110,10 @@ export type Action =
   | { type: 'OPEN_LINE_EDITOR'; mode: 'insert' | 'modify'; name: string; fields: InstructionField[] }
   | { type: 'UPDATE_LINE_EDITOR_FIELDS'; fields: InstructionField[] }
   | { type: 'CLOSE_LINE_EDITOR' }
-  | { type: 'LOG'; message: string };
+  | { type: 'SET_TEXT_MODE_CONTENT'; content: string }
+  | { type: 'REPLACE_LINES'; lines: JobLine[] }
+  | { type: 'SET_LOG_MESSAGES'; messages: LogEntry[] }
+  | { type: 'OPEN_VIEW'; key: keyof AppState['view'] };
 
 function renumber(lines: Job['lines']): Job['lines'] {
   return lines.map((l, i) => ({ ...l, lineNo: i }));
@@ -262,8 +272,14 @@ function baseReducer(state: AppState, action: Action): AppState {
       return state.lineEditor ? { ...state, lineEditor: { ...state.lineEditor, fields: action.fields } } : state;
     case 'CLOSE_LINE_EDITOR':
       return { ...state, lineEditor: null };
-    case 'LOG':
-      return { ...state, logMessages: [...state.logMessages, action.message] };
+    case 'SET_TEXT_MODE_CONTENT':
+      return { ...state, textModeContent: action.content };
+    case 'REPLACE_LINES':
+      return { ...state, job: { ...state.job, lines: renumber(action.lines) } };
+    case 'SET_LOG_MESSAGES':
+      return { ...state, logMessages: action.messages };
+    case 'OPEN_VIEW':
+      return { ...state, view: { ...state.view, [action.key]: true } };
     default:
       return state;
   }
@@ -279,6 +295,7 @@ const DIRTYING_ACTIONS = new Set<Action['type']>([
   'INSERT_LINE',
   'UPDATE_LINE',
   'UPDATE_HEADER',
+  'REPLACE_LINES',
 ]);
 
 function reducer(state: AppState, action: Action): AppState {

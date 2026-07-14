@@ -1,0 +1,31 @@
+.log-viewer {
+  flex-shrink: 0;
+  max-height: 110px;
+  overflow: auto;
+  background: #fdfdfd;
+  border-top: 1px solid #a9c8ea;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 4px 0;
+}
+
+.log-entry {
+  padding: 2px 10px;
+  color: #333;
+  white-space: pre;
+}
+
+.log-entry-muted {
+  color: #888;
+  font-style: italic;
+}
+
+.log-entry-clickable {
+  cursor: pointer;
+  color: #a5372d;
+}
+
+.log-entry-clickable:hover {
+  background: #fdecea;
+  text-decoration: underline;
+}

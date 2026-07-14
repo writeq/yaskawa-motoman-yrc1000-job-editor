@@ -23,7 +23,7 @@ export function TitleBar() {
         <button title="Open Job" onClick={() => void openJobFlow(dispatch)}>
           <IconOpenFolderSmall size={15} />
         </button>
-        <button title="Save" onClick={() => void saveJobFlow(dispatch, state)}>
+        <button title="Save" onClick={() => void saveJobFlow(dispatch, state.job, state.instHeader)}>
           <IconSaveDisk size={15} />
         </button>
         <span className="quick-access-arrow">

@@ -46,7 +46,7 @@ export function BackstageMenu({ onClose }: BackstageMenuProps) {
       icon: <IconSaveDisk size={16} />,
       onClick: () => {
         onClose();
-        void saveJobFlow(dispatch, state);
+        void saveJobFlow(dispatch, state.job, state.instHeader);
       },
     },
     {
@@ -54,7 +54,7 @@ export function BackstageMenu({ onClose }: BackstageMenuProps) {
       icon: <IconRecentFile size={16} />,
       onClick: () => {
         onClose();
-        void saveJobAsFlow(dispatch, state);
+        void saveJobAsFlow(dispatch, state.job, state.instHeader);
       },
     },
     { label: 'Delete Job(D)...', icon: <IconTrash size={16} /> },

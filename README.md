@@ -15,6 +15,7 @@ A free, open-source desktop clone of the Yaskawa Motoman **JEDIT/YRC1000** job e
 - **Real `.JBI` file open/save** via native OS dialogs — reads and writes the job's name, comment, control group, date, and local variable counts, preserving the `//POS` block and any header lines it doesn't model yet so round-tripping a file never silently drops data
 - **Backstage menu** — Create Job, Select Job, Save, Save As, Delete Job, Batch Change Folder Name, Print, Recent files
 - **Dialogs**: Find and Jump, Insert/Modify Instruction (category → instruction → detail), Header of Job, Create Job, Modify Speed, Position Variable, Match Control Group → Select Group → Select, Display Setting (General/Color), Select Language
+- **Condition File Edit** — open a real `IONAME.DAT`/`VARNAME.DAT` file, browse its number → name entries, rename one via a Character Edit sub-dialog, and save back to disk
 
 <p float="left">
   <img src="docs/screenshots/insert-instruction.png" width="49%" alt="Insert Instruction dialog" />
@@ -27,7 +28,9 @@ The visual shell, editing flows, and real `.JBI` file I/O are in place. Still on
 
 - [ ] `ALL.PRM` parameter file parsing — we only check that one exists next to the job (and warn if it doesn't, matching the original); its actual binary/text layout isn't publicly documented, so its contents (instruction sets, aliases, control group options, ...) aren't read
 - [ ] Text Mode autocomplete/input support (the original suggests instruction/tag candidates as you type)
-- [ ] Condition file editing (`IONAME.DAT` / `VARNAME.DAT`), macro commands, expression editor
+- [ ] Macro commands, expression editor (SET/EXPRESS)
+
+Condition files are read as a flat, ordered list of `number  name` entries — the vendor's exact column layout and any IN/OUT or B/I/D/R/S/P/BP/EX type-sectioning convention within a single file isn't documented, so we don't guess at splitting entries into sections.
 
 **Deliberately out of scope: editing the `//POS` block.** It holds the job's actual robot/base/station position data — the coordinates a real controller would move to. We preserve it byte-for-byte on load/save so nothing is lost, but we won't parse or expose it for editing without a verified spec for its layout: a subtly wrong field here doesn't just produce a broken file, it can drive a real robot to the wrong physical position. The Position Variable dialog stays a read-only mock display until that changes.
 
@@ -76,6 +79,7 @@ src/
     jbiFormat.ts        .JBI text parser/serializer
     jobFileIO.ts         open/save flows over the Electron bridge
     textMode.ts          Text Mode content <-> lines + syntax check
+    conditionFile.ts     IONAME.DAT/VARNAME.DAT parser/serializer
     mockJob.ts, instructions.ts
   state/              reducer-based app store
   types/              job/header/instruction types, window.jobEditor bridge

@@ -74,6 +74,27 @@ ipcMain.handle('job:write-file', async (_event, filePath: string, content: strin
   return true;
 });
 
+ipcMain.handle('condfile:open-dialog', async (event) => {
+  const win = BrowserWindow.fromWebContents(event.sender) ?? undefined;
+  const result = await dialog.showOpenDialog(win, {
+    title: 'Open Condition File',
+    filters: [
+      { name: 'Condition Files', extensions: ['dat', 'DAT'] },
+      { name: 'All Files', extensions: ['*'] },
+    ],
+    properties: ['openFile'],
+  });
+  if (result.canceled || result.filePaths.length === 0) return null;
+  const filePath = result.filePaths[0];
+  const content = await fs.readFile(filePath, 'utf-8');
+  return { filePath, content };
+});
+
+ipcMain.handle('condfile:write-file', async (_event, filePath: string, content: string) => {
+  await fs.writeFile(filePath, content, 'utf-8');
+  return true;
+});
+
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {

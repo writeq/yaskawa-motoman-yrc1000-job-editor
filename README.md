@@ -10,6 +10,7 @@ A free, open-source desktop clone of the Yaskawa Motoman **JEDIT/YRC1000** job e
 
 - **Ribbon interface** (Home / Settings tabs) matching the original layout — Edit Mode, Edit, View, and Settings groups, with a custom SVG icon set
 - **Job editor** line list (`NOP` / `DOUT` / `END`-style instructions) with line selection, edit-lock (`X0001`) and comment (`//`) marks
+- **Inline line-edit bar** docked at the bottom of the main window (not a modal) for inserting/modifying an instruction, with an Edit button that drills into the structured field editor — mirrors the original app's interaction model
 - **Real `.JBI` file open/save** via native OS dialogs — reads and writes the job's name, comment, control group, date, and local variable counts, preserving the `//POS` block and any header lines it doesn't model yet so round-tripping a file never silently drops data
 - **Backstage menu** — Create Job, Select Job, Save, Save As, Delete Job, Batch Change Folder Name, Print, Recent files
 - **Dialogs**: Find and Jump, Insert/Modify Instruction (category → instruction → detail), Header of Job, Create Job, Modify Speed, Position Variable, Match Control Group → Select Group → Select, Display Setting (General/Color), Select Language
@@ -25,7 +26,6 @@ The visual shell, editing flows, and real `.JBI` file I/O are in place. Still on
 
 - [ ] `ALL.PRM` parameter file support (currently only the job file itself is read/written)
 - [ ] Text Mode (freeform Notepad-style editing with autocomplete and syntax check)
-- [ ] Inline line-edit box docked in the main window (currently a modal)
 - [ ] Condition file editing (`IONAME.DAT` / `VARNAME.DAT`), macro commands, expression editor
 - [ ] Position-variable editing (the `//POS` block round-trips untouched but isn't parsed into the Position Variable dialog yet)
 

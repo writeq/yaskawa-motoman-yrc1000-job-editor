@@ -31,3 +31,8 @@
 .toast-error {
   background: linear-gradient(to bottom, #c0453a, #a5372d);
 }
+
+.toast-warning {
+  background: linear-gradient(to bottom, #d99a1f, #b87e0f);
+  color: #2a1c00;
+}

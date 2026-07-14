@@ -9,7 +9,8 @@ export function Toast() {
 
   useEffect(() => {
     if (!toast) return;
-    const timer = setTimeout(() => dispatch({ type: 'CLEAR_TOAST' }), 3500);
+    const duration = toast.kind === 'success' ? 3500 : 5500;
+    const timer = setTimeout(() => dispatch({ type: 'CLEAR_TOAST' }), duration);
     return () => clearTimeout(timer);
   }, [toast, dispatch]);
 

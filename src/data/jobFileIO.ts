@@ -21,7 +21,17 @@ export async function openJobFlow(dispatch: Dispatch<Action>): Promise<void> {
     if (!result) return;
     const { job, instHeader } = parseJbi(result.content, result.filePath);
     dispatch({ type: 'LOAD_JOB', job, instHeader });
-    dispatch({ type: 'SHOW_TOAST', toast: { text: `Opened ${fileNameFromPath(result.filePath)}`, kind: 'success' } });
+    if (result.paramFileFound) {
+      dispatch({
+        type: 'SHOW_TOAST',
+        toast: { text: `Opened ${fileNameFromPath(result.filePath)}`, kind: 'success' },
+      });
+    } else {
+      dispatch({
+        type: 'SHOW_TOAST',
+        toast: { text: 'ALL.prm is not found in the folder of job.', kind: 'warning' },
+      });
+    }
   } catch (err) {
     dispatch({ type: 'SHOW_TOAST', toast: { text: `Failed to open job: ${(err as Error).message}`, kind: 'error' } });
   }

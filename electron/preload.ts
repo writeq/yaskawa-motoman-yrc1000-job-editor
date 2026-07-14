@@ -3,6 +3,10 @@ import { contextBridge, ipcRenderer } from 'electron';
 export interface OpenJobResult {
   filePath: string;
   content: string;
+  /** Whether an ALL.PRM parameter file was found alongside the job. The
+   * real hardware/pendant requires it to correctly interpret a job's
+   * instructions; we only check for its presence, we don't parse it. */
+  paramFileFound: boolean;
 }
 
 const jobEditorAPI = {

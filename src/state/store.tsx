@@ -27,7 +27,7 @@ export type DialogName =
 
 export interface Toast {
   text: string;
-  kind: 'success' | 'error';
+  kind: 'success' | 'error' | 'warning';
 }
 
 /** The inline line-edit bar docked at the bottom of the job editor, used to

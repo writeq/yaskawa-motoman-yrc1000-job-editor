@@ -29,6 +29,15 @@ function createWindow() {
   return win;
 }
 
+async function hasParamFile(jobFilePath: string): Promise<boolean> {
+  try {
+    const entries = await fs.readdir(path.dirname(jobFilePath));
+    return entries.some((name) => name.toLowerCase() === 'all.prm');
+  } catch {
+    return false;
+  }
+}
+
 ipcMain.handle('job:open-dialog', async (event) => {
   const win = BrowserWindow.fromWebContents(event.sender) ?? undefined;
   const result = await dialog.showOpenDialog(win, {
@@ -42,7 +51,8 @@ ipcMain.handle('job:open-dialog', async (event) => {
   if (result.canceled || result.filePaths.length === 0) return null;
   const filePath = result.filePaths[0];
   const content = await fs.readFile(filePath, 'utf-8');
-  return { filePath, content };
+  const paramFileFound = await hasParamFile(filePath);
+  return { filePath, content, paramFileFound };
 });
 
 ipcMain.handle('job:save-as-dialog', async (event, defaultName: string) => {

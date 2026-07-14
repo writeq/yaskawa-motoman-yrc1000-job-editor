@@ -1,6 +1,8 @@
 export interface OpenJobResult {
   filePath: string;
   content: string;
+  /** Whether an ALL.PRM parameter file was found alongside the job. */
+  paramFileFound: boolean;
 }
 
 export interface JobEditorAPI {
